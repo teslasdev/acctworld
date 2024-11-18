@@ -7,12 +7,12 @@ import { Link, Outlet } from 'react-router-dom';
 const Layout = () => {
   return (
     <div className="">
-      <div className="w-[100vw] justify-between mx-auto max-w-[1440px] h-[87px] flex  items-center">
+      <div className="md:w-[100vw] md:px-0 px-4 justify-between mx-auto max-w-[1440px] h-[87px] flex  items-center">
         <div className="">
-          <img src={Logo} alt="" className="w-[89px]  h-[64px]" />
+          <img src={Logo} alt="" className="md:w-[89px] w-[50px] h-[42px] md:h-[64px]" />
         </div>
 
-        <div>
+        <div className='hidden md:block'>
           <ul className="flex gap-4 font-[500] text-black">
             <Link to={'/'}>About Us</Link>
             <Link to={'/'}>Service</Link>
@@ -26,14 +26,14 @@ const Layout = () => {
         <div className="flex gap-4 relative z-50">
           <Link
             to={'/auth/signin'}
-            className="cursor-pointer w-[120px] text-white h-[42px] font-[500] rounded-[16px] flex justify-center items-center ounded-[16px] bg-gradient-to-r from-gradient-start to-gradient-end"
+            className="cursor-pointer md:w-[120px] w-[80px] text-white md:h-[42px] h-[35px] font-[500] md:rounded-[16px] rounded-[10px] flex justify-center items-center ounded-[16px] bg-gradient-to-r from-gradient-start to-gradient-end"
           >
             Login
           </Link>
 
           <Link
             to={'/auth/signup'}
-            className="w-[120px] h-[42px] rounded-[16px] font-[500] border flex justify-center items-center border-[#EE3A1B] to-[#D1234D] text-[#0A0A0A]"
+            className="md:w-[120px] w-[80px] md:h-[42px] h-[35px] md:rounded-[16px] rounded-[10px] font-[500] border flex justify-center items-center border-[#EE3A1B] to-[#D1234D] text-[#0A0A0A]"
           >
             Sign up
           </Link>
@@ -50,7 +50,7 @@ const Layout = () => {
               </div>
             </div>
           </div> */}
-          <div className="flex justify-between items-center">
+          <div className="flex md:flex-row flex-col-reverse gap-4 justify-between items-center">
             <p className="flex items-center gap-2 text-white text-[18px] font-[500]">
               <svg
                 xmlns="http://www.w3.org/2000/svg"

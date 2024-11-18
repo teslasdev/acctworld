@@ -8,11 +8,11 @@ import Chart from '../images/cover/chart.png';
 const Home = () => {
   return (
     <>
-      <div className="w-full relative h-[600px] py-12">
+      <div className="w-full relative min-h-[600px] py-12">
         <div className="absolute -top-30 right-0">
           <img src={Bg} alt="" className="w-[598px]" />
         </div>
-        <div className="mx-auto max-w-[1440px] flex justify-between items-center w-full">
+        <div className="mx-auto md:px-0 px-4 relative z-50 max-w-[1440px] flex md:flex-row flex-col justify-between items-center w-full">
           <div>
             <div className="flex gap-4 items-center">
               <div className="bg-[#EEE6E6] p-2 rounded-[8px]">
@@ -40,11 +40,11 @@ const Home = () => {
               </div>
             </div>
 
-            <div className="my-6 w-[50%]">
-              <h3 className="text-[40px] font-[700] text-[#000000]">
+            <div className="my-6 w-full md:w-[60%]">
+              <h3 className="md:text-[50px] text-[30px] md:leading-[40px] font-[800] text-[#000000]">
                 Social Media Account
               </h3>
-              <h3 className="text-[40px] leading-[70px] font-[700] text-[#000000] mt-3 bg-gradient-to-r from-gradient-start bg-clip-text text-transparent to-gradient-end">
+              <h3 className="md:text-[40px] text-[25px] leading-[70px] font-[700] text-[#000000] md:mt-3 bg-gradient-to-r from-gradient-start bg-clip-text text-transparent to-gradient-end">
                 <Typewriter
                   words={[
                     'Want to learn more?',
@@ -74,11 +74,11 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div className="mx-auto max-w-[1440px] flex justify-between items-center py-24 w-full">
-        <div className="w-[50%]">
+      <div className="mx-auto max-w-[1440px] md:px-0 px-4 flex md:flex-row flex-col  justify-between items-center py-24 w-full">
+        <div className="md:w-[50%]">
           <img src={People} alt="" className="w-[598px]" />
         </div>
-        <div className="w-[50%]">
+        <div className="md:w-[50%] md:mt-0 mt-4">
           <h3 className="text-[20px] leading-[50px] font-[700] text-[#D50E3C]">
             About Us
           </h3>
@@ -96,8 +96,8 @@ const Home = () => {
         </div>
       </div>
       <div className="bg-[#FEFEFE]">
-        <div className="mx-auto max-w-[1440px] py-24 w-full">
-          <div className="w-[50%]">
+        <div className="mx-auto max-w-[1440px] px-4 md:px-0 py-24 w-full">
+          <div className="md:w-[50%]">
             <h3 className="text-[20px] leading-[50px] font-[700] text-[#D50E3C]">
               Our services
             </h3>
@@ -105,7 +105,7 @@ const Home = () => {
               Experience that grows with your scale
             </h3>
           </div>
-          <div className="grid grid-cols-3 py-24 gap-12">
+          <div className="grid md:grid-cols-3 grid-cols-1 py-24 gap-12">
             <div className="flex flex-col gap-2">
               <div className="w-[60px] h-[60px] flex justify-center items-center rounded-[8px] bg-[#d50e3c11]">
                 <svg
@@ -124,7 +124,7 @@ const Home = () => {
               <h3 className="text-[20px] leading-[50px] font-[700] text-[#000000]">
                 Unified Dashboard
               </h3>
-              <p className="text-[18px] w-[70%] text-[#000] leading-[28.8px]">
+              <p className="text-[18px] md:w-[70%] text-[#000] leading-[28.8px]">
                 Bring All Your Social Accounts Together for Seamless Management.
                 Access all your social profiles in one dashboard.
               </p>
@@ -148,7 +148,7 @@ const Home = () => {
               <h3 className="text-[20px] leading-[50px] font-[700] text-[#000000]">
                 Advanced Scheduling
               </h3>
-              <p className="text-[18px] w-[70%] text-[#000] leading-[28.8px]">
+              <p className="text-[18px] md:w-[70%] text-[#000] leading-[28.8px]">
                 Plan Ahead and Post Consistently Without the Hassle. Schedule
                 posts across multiple channels in advance.
               </p>
@@ -174,7 +174,7 @@ const Home = () => {
               <h3 className="text-[20px] leading-[50px] font-[700] text-[#000000]">
                 Analytics & Insights
               </h3>
-              <p className="text-[18px] w-[70%] text-[#000] leading-[28.8px]">
+              <p className="text-[18px] md:w-[70%] text-[#000] leading-[28.8px]">
                 Track Performance and Refine Your Strategy with Ease. Dive into
                 detailed analytics to measure engagement.
               </p>
@@ -183,11 +183,11 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="mx-auto max-w-[1440px] flex flex-row-reverse justify-between items-center py-24 w-full">
-        <div className="w-[50%]">
+      <div className="mx-auto md:px-0 px-4 max-w-[1440px] flex md:flex-row-reverse flex-col-reverse justify-between items-center py-24 w-full">
+        <div className="md:w-[50%]">
           <img src={People} alt="" className="w-[598px]" />
         </div>
-        <div className="w-[40%]">
+        <div className="md:w-[40%]">
           <h3 className="text-[20px] leading-[50px] font-[700] text-[#D50E3C]">
             How It Works
           </h3>
@@ -199,7 +199,7 @@ const Home = () => {
       </div>
 
       <div className="bg-[#d50e3c20]">
-        <div className="mx-auto max-w-[1440px] py-24 w-full">
+        <div className="mx-auto md:px-0 px-4 max-w-[1440px] py-24 w-full">
           <div className="w-[100%] flex justify-center items-center flex-col">
             <h3 className="text-[20px] leading-[50px] font-[700] text-[#D50E3C]">
               TESTIMONIAL
@@ -208,7 +208,7 @@ const Home = () => {
               What Our Clients say!
             </h3>
           </div>
-          <div className="grid grid-cols-3 py-24 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 py-24 gap-12">
             <div className="flex flex-col justify-center items-center gap-2">
               <div className="gap-2 flex justify-center items-center rounded-[8px] mb-2">
                 {/* Star */}
@@ -497,7 +497,7 @@ const Home = () => {
       </div>
 
       <div className="bg-[#FCFBFF]">
-        <div className="mx-auto max-w-[1440px] py-24 w-full">
+        <div className="mx-auto md:px-0 px-4 max-w-[1440px] py-24 w-full">
           <div className="w-[100%] flex justify-center items-center flex-col">
             <h3 className="text-[20px] leading-[50px] font-[700] text-[#D50E3C]">
               Features
@@ -507,7 +507,7 @@ const Home = () => {
               than the competition).
             </h3>
           </div>
-          <div className="grid grid-cols-4 py-24 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-4 py-24 gap-12">
             <div className="flex flex-col justify-around bg-[#F9F8F9] gap-2 py-10 px-4">
               <div className="w-[64px]  h-[64px] flex justify-center items-center rounded-[8px] bg-[#FCFBFF]">
                 <svg
@@ -766,16 +766,16 @@ const Home = () => {
       </div>
 
       <div className="bg-white">
-        <div className="mx-auto max-w-[1440px] flex flex-row-reverse bg-[#FBFAE8] justify-between items-center px-12 w-full">
-          <div className="w-[40%] relative flex items-center justify-center">
-            <img src={Mobile} alt="" className="relative z-50 w-[310px] h-[468px]" />
-            <img src={Chart} alt="" className="absolute z-20 w-[412px] left-1/2 -translate-x-1/2 -top-25 h-[412px]" />
+        <div className="mx-auto max-w-[1440px] flex flex-col-reverse md:flex-row-reverse bg-[#FBFAE8] justify-between items-center md:px-12 px-4 w-full">
+          <div className="md:w-[40%] relative flex items-center justify-center">
+            <img src={Mobile} alt="" className="relative z-50 w-[310px] md:mt-0 mt-2 h-[468px]" />
+            <img src={Chart} alt="" className="hidden md:block absolute z-20 md:w-[412px] left-1/2 -translate-x-1/2 -top-25 h-[412px]" />
           </div>
-          <div className="w-[60%]">
-            <h3 className="text-[20px] leading-[50px] font-[700] text-[#D50E3C]">
+          <div className="md:w-[60%]">
+            <h3 className="md:text-[20px] leading-[50px] font-[700] text-[#D50E3C]">
             TRY IT NOW
             </h3>
-            <h3 className="text-[40px] leading-[50px] font-[700] text-[#000000]">
+            <h3 className="md:text-[40px] text-[20px] md:leading-[50px] leading-[25px] font-[700] text-[#000000]">
             Ready to level up your social media accounts management ?
             </h3>
             <p className='text-[18px] text-[#000] mt-3'>Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.</p>
