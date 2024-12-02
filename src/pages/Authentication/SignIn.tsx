@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { useSignInMutation } from '../../api/post';
 import Alerts from '../UiElements/Alerts';
@@ -41,6 +41,7 @@ const SignIn: React.FC = () => {
         setStatus('success');
         setMessage(data.message);
         Cookies.set('token', data.token, { expires: 7 });
+        
         window.location.href = '/dashboard';
       })
       .catch((err: any) => {

@@ -7,19 +7,19 @@ import { Link, Outlet } from 'react-router-dom';
 const Layout = () => {
   return (
     <div className="">
-      <div className="md:w-[100vw] md:px-0 px-4 justify-between mx-auto max-w-[1440px] h-[87px] flex  items-center">
+      <div className="md:w-[100vw] lg:px-0 px-4 justify-between mx-auto max-w-[1440px] h-[87px] flex  items-center">
         <div className="">
           <img src={Logo} alt="" className="md:w-[89px] w-[50px] h-[42px] md:h-[64px]" />
         </div>
 
-        <div className='hidden md:block'>
+        <div className='hidden lg:block'>
           <ul className="flex gap-4 font-[500] text-black">
             <Link to={'/'}>About Us</Link>
             <Link to={'/'}>Service</Link>
             <Link to={'/'}>Features</Link>
             <Link to={'/'}>How it works</Link>
             <Link to={'/'}>Testimonial</Link>
-            <Link to={'/'}>Contact Us</Link>
+            <Link to={'https://engainsmedia.com/'}>Boast Accounts</Link>
           </ul>
         </div>
 

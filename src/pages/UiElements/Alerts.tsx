@@ -2,8 +2,8 @@ const Alerts = ({ status, message }: any) => {
   return (
     <>
       {status == 'warning' && (
-        <div className="flex w-full border-l-6 items-center border-warning bg-warning bg-opacity-[15%] shadow-md dark:bg-[#1B1B24] dark:bg-opacity-30 p-4">
-          <div className="mr-5 flex h-9 w-9 items-center justify-center rounded-lg bg-warning bg-opacity-30">
+        <div className="flex animate-pulse w-full border-l-6 items-center border-warning bg-warning bg-opacity-[15%] shadow-md dark:bg-[#1B1B24] dark:bg-opacity-30 p-4">
+          <div className="mr-5 flex h-7 w-9 items-center justify-center rounded-lg bg-warning bg-opacity-30">
             <svg
               width="19"
               height="16"
@@ -26,8 +26,8 @@ const Alerts = ({ status, message }: any) => {
       )}
 
       {status == 'success' && (
-        <div className="flex w-full border-l-6 items-center border-[#34D399] bg-[#34D399] bg-opacity-[15%] shadow-md dark:bg-[#1B1B24] dark:bg-opacity-30 p-4">
-          <div className="mr-5 flex h-9 w-full max-w-[36px] items-center justify-center rounded-lg bg-[#34D399]">
+        <div className="flex animate-pulse w-full border-l-6 items-center border-[#34D399] bg-[#34D399] bg-opacity-[15%] shadow-md dark:bg-[#1B1B24] dark:bg-opacity-30 p-4">
+          <div className="mr-5 flex h-7 w-full max-w-[36px] items-center justify-center rounded-lg bg-[#34D399]">
             <svg
               width="16"
               height="12"
@@ -51,8 +51,8 @@ const Alerts = ({ status, message }: any) => {
       )}
 
       {status == 'error' && (
-        <div className="flex w-full border-l-6 items-center border-[#F87171] bg-[#F87171] bg-opacity-[15%]  shadow-md dark:bg-[#1B1B24] dark:bg-opacity-30 p-4">
-          <div className="mr-5 flex h-9 w-full max-w-[36px] items-center justify-center rounded-lg bg-[#F87171]">
+        <div className="flex animate-pulse w-full border-l-6 items-center border-[#F87171] bg-[#F87171] bg-opacity-[15%]  shadow-md dark:bg-[#1B1B24] dark:bg-opacity-30 p-4">
+          <div className="mr-5 flex h-7 w-full max-w-[36px] items-center justify-center rounded-lg bg-[#F87171]">
             <svg
               width="13"
               height="13"

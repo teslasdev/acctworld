@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
+import { useCategoryQuery } from '../../../api/fetch';
 
-const SelectGroupTwo: React.FC = () => {
+type FilterContextType = {
+  setFilter: (category: any) => void;
+};
+
+const SelectGroupTwo: React.FC<FilterContextType> = ({ setFilter }) => {
   const [selectedOption, setSelectedOption] = useState<string>('');
   const [isOptionSelected, setIsOptionSelected] = useState<boolean>(false);
 
@@ -8,6 +13,7 @@ const SelectGroupTwo: React.FC = () => {
     setIsOptionSelected(true);
   };
 
+  const { data } = useCategoryQuery();
   return (
     <div>
       <div className="relative z-20 bg-white dark:bg-form-input">
@@ -47,6 +53,7 @@ const SelectGroupTwo: React.FC = () => {
           onChange={(e) => {
             setSelectedOption(e.target.value);
             changeTextColor();
+            setFilter(e.target.value)
           }}
           className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-12 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input ${
             isOptionSelected ? 'text-black dark:text-white' : ''
@@ -55,15 +62,18 @@ const SelectGroupTwo: React.FC = () => {
           <option value="" disabled className="text-body dark:text-bodydark">
             Filter By
           </option>
-          <option value="USA" className="text-body dark:text-bodydark">
-            USA
-          </option>
-          <option value="UK" className="text-body dark:text-bodydark">
-            UK
-          </option>
-          <option value="Canada" className="text-body dark:text-bodydark">
-            Canada
-          </option>
+          {data?.categories.map((item: any, index: number) => {
+            return (
+              <option
+                value={item.id}
+                key={index}
+                className="text-body dark:text-bodydark"
+                
+              >
+                {item.name}
+              </option>
+            );
+          })}
         </select>
 
         <span className="absolute top-1/2 right-4 z-10 -translate-y-1/2">

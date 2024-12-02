@@ -1,12 +1,51 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CardDataStats from '../../components/CardDataStats';
-import TableOne from '../../components/Tables/TableOne';
+import TransactionsTable from '../../components/Tables/TransactionsTable';
+import Modal from '../../components/Modals/AddFunds';
+import { generatePaymentReference, openSmallTab } from '../helper.ts/functions';
+import { usePayementMutation } from '../../api/postToken';
+import Alerts from '../UiElements/Alerts';
+import { useAnalysticsQuery } from '../../api/fetch';
+import banner1 from '../../images/brand/Banners-02.jpg';
+import banner2 from '../../images/brand/Banners-03.jpg';
+import banner3 from '../../images/brand/Banners-04.jpg';
+import banner4 from '../../images/brand/Banners-05.jpg';
+
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, A11y, Autoplay } from 'swiper/modules';
 
 const Overview: React.FC = () => {
+  const { data, refetch } = useAnalysticsQuery();
+  const [isOpen, setOpen] = useState(false);
+  const [amount, setAmount] = useState('');
+  const [payment, { isLoading }] = usePayementMutation();
+  const [status, setStatus] = useState('');
+  const [message, setMessage] = useState('');
+  const handleInitiate = async () => {
+    const ref = generatePaymentReference();
+    await payment({ amount, ref })
+      .unwrap()
+      .then((data: any) => {
+        if (data.success) {
+          setMessage('Processing your payment...Please wait');
+          setStatus('warning');
+          const url = data.data.responseBody.checkoutUrl;
+          openSmallTab(url, refetch);
+        }
+      })
+      .catch((err: any) => {
+        console.log(err);
+        setMessage('Error,Try Again or contact admin');
+        setStatus('error');
+      });
+  };
   return (
     <>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
-        <CardDataStats title="Balance Account" total="₦ 0">
+        <CardDataStats
+          title="Balance Account"
+          total={`₦ ${data?.data.wallet.toLocaleString() ?? 0}`}
+        >
           <svg
             className="fill-[#d50e3c] dark:fill-white"
             width="22"
@@ -25,7 +64,7 @@ const Overview: React.FC = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Total Orders" total="0">
+        <CardDataStats title="Total Orders" total={`${data?.data.order ?? 0}`}>
           <svg
             className="fill-[#d50e3c] dark:fill-white"
             width="20"
@@ -48,7 +87,10 @@ const Overview: React.FC = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Total Transactions" total="0">
+        <CardDataStats
+          title="Total Transactions"
+          total={`${data?.data.payment ?? 0}`}
+        >
           <svg
             className="fill-[#d50e3c] dark:fill-white"
             width="22"
@@ -67,7 +109,10 @@ const Overview: React.FC = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Total Products" total="0">
+        <CardDataStats
+          title="Total Products"
+          total={`${data?.data.products ?? 0}`}
+        >
           <svg
             className="fill-[#d50e3c] dark:fill-white"
             width="22"
@@ -92,10 +137,92 @@ const Overview: React.FC = () => {
         </CardDataStats>
       </div>
 
-      <div className="mt-4 grid  gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
-        <TableOne />
+      <div className="slider-container py-6">
+        <Swiper
+          modules={[Navigation, Pagination, A11y, Autoplay]}
+          spaceBetween={50}
+          slidesPerView={1}
+          navigation
+          pagination={{ clickable: true }}
+          loop
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false, 
+          }}
+        >
+          <SwiperSlide>
+            <img src={banner1} alt="Slide 1" className="w-full h-[500px]" />
+          </SwiperSlide>
+          <SwiperSlide>
+            <img src={banner2} alt="Slide 2" className="w-full h-[500px]" />
+          </SwiperSlide>
+          <SwiperSlide>
+            <img src={banner3} alt="Slide 2" className="w-full h-[500px]" />
+          </SwiperSlide>
+          <SwiperSlide>
+            <img src={banner4} alt="Slide 2" className="w-full h-[500px]" />
+          </SwiperSlide>
+        </Swiper>
+      </div>
 
-        {/* <Buttons /> */}
+      <div className="mt-4 w-full flex flex-col gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
+        <div className="flex items-center w-full justify-between">
+          <h3>Transaction History</h3>
+          <button
+            onClick={() => setOpen(true)}
+            className="px-4 py-2 bg-[#d50e3c] text-white rounded hover:bg-[#d50e3c] focus:outline-none"
+          >
+            Add Funds
+          </button>
+        </div>
+        <TransactionsTable refresh={refetch} />
+        <div className="w-[70vw]">
+          {/* <Buttons /> */}
+          <Modal
+            title="Add Funds"
+            isOpen={isOpen}
+            onClose={() => setOpen(false)}
+          >
+            <Alerts status={status} message={message} />
+            {!status && (
+              <>
+                <div className="w-full">
+                  <label
+                    className="mb-3 block text-sm font-medium text-black dark:text-white"
+                    htmlFor="phoneNumber"
+                  >
+                    Enter Amount
+                  </label>
+                  <input
+                    className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                    type="number"
+                    name="amount"
+                    id="amount"
+                    value={amount}
+                    placeholder="Amount"
+                    defaultValue="Amount"
+                    onChange={(e: any) => setAmount(e.target.value)}
+                  />
+                </div>
+
+                <button
+                  disabled={amount == '' ? true : false}
+                  onClick={handleInitiate}
+                  className="px-4 py-2 my-6 bg-[#d50e3c] text-white rounded hover:bg-[#d50e3c] focus:outline-none"
+                >
+                  {isLoading ? 'Processing....' : 'Make Payment'}
+                </button>
+                <iframe
+                  width="100%"
+                  height="315"
+                  src="https://www.youtube.com/embed/iiHl_50dhgU"
+                  title="How to make a deposit on RediProfiles.com"
+                  allowFullScreen={true}
+                ></iframe>
+              </>
+            )}
+          </Modal>
+        </div>
       </div>
     </>
   );

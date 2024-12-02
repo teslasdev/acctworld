@@ -4,15 +4,22 @@ import Bg2 from '../images/cover/bg2.png';
 import People from '../images/cover/people.png';
 import Mobile from '../images/cover/mobile.png';
 import Chart from '../images/cover/chart.png';
+import banner1 from '../images/brand/Banners-02.jpg';
+import banner2 from '../images/brand/Banners-03.jpg';
+import banner3 from '../images/brand/Banners-04.jpg';
+import banner4 from '../images/brand/Banners-05.jpg';
+
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, A11y, Autoplay } from 'swiper/modules';
 
 const Home = () => {
   return (
     <>
-      <div className="w-full relative min-h-[600px] py-12">
+      <div className="w-full relative min-h-[450px] py-12">
         <div className="absolute -top-30 right-0">
-          <img src={Bg} alt="" className="w-[598px]" />
+          <img src={Bg} alt="" className="lg:w-[598px] md:w-[400px]" />
         </div>
-        <div className="mx-auto md:px-0 px-4 relative z-50 max-w-[1440px] flex md:flex-row flex-col justify-between items-center w-full">
+        <div className="mx-auto lg:px-0 px-4 relative z-50 max-w-[1440px] flex md:flex-row flex-col justify-between items-center w-full">
           <div>
             <div className="flex gap-4 items-center">
               <div className="bg-[#EEE6E6] p-2 rounded-[8px]">
@@ -40,11 +47,11 @@ const Home = () => {
               </div>
             </div>
 
-            <div className="my-6 w-full md:w-[60%]">
-              <h3 className="md:text-[50px] text-[30px] md:leading-[40px] font-[800] text-[#000000]">
+            <div className="my-6 w-full md:w-[70%]">
+              <h3 className="lg:text-[50px] text-[30px] lg:leading-[40px] font-[800] text-[#000000]">
                 Social Media Account
               </h3>
-              <h3 className="md:text-[40px] text-[25px] leading-[70px] font-[700] text-[#000000] md:mt-3 bg-gradient-to-r from-gradient-start bg-clip-text text-transparent to-gradient-end">
+              <h3 className="lg:text-[40px] text-[25px] leading-[70px] font-[700] text-[#000000] md:mt-3 bg-gradient-to-r from-gradient-start bg-clip-text text-transparent to-gradient-end">
                 <Typewriter
                   words={[
                     'Want to learn more?',
@@ -64,17 +71,17 @@ const Home = () => {
                 Schedule, track, and engage – all with a single, powerful
                 platform.
               </p>
-              <button className="text-white px-4 py-2 mt-6 font-[500] rounded-[16px] bg-gradient-to-r from-gradient-start to-gradient-end">
+              <button onClick={() => window.location.href = '/auth/signup'} className="text-white px-4 py-2 mt-6 font-[500] rounded-[16px] bg-gradient-to-r from-gradient-start to-gradient-end">
                 Get Started Now
               </button>
             </div>
           </div>
           <div className="flex justify-between items-center">
-            <img src={Bg2} alt="" className="w-[459.35px]" />
+            <img src={Bg2} alt="" className="lg:w-[459.35px] w-[600px]" />
           </div>
         </div>
       </div>
-      <div className="mx-auto max-w-[1440px] md:px-0 px-4 flex md:flex-row flex-col  justify-between items-center py-24 w-full">
+      <div className="mx-auto max-w-[1440px] lg:px-0 px-4 flex md:flex-row flex-col gap-4  justify-between items-center lg:py-24 py-12 w-full">
         <div className="md:w-[50%]">
           <img src={People} alt="" className="w-[598px]" />
         </div>
@@ -82,7 +89,7 @@ const Home = () => {
           <h3 className="text-[20px] leading-[50px] font-[700] text-[#D50E3C]">
             About Us
           </h3>
-          <h3 className="text-[40px] leading-[50px] font-[700] text-[#000000]">
+          <h3 className="lg:text-[40px] text-[20px] lg:leading-[50px] leading-[25px] font-[700] text-[#000000]">
             Simplifying Digital Onboarding, One Account at a Time.
           </h3>
           <p className="text-[18px] text-[#475569] mt-2 leading-[28.8px]">
@@ -96,16 +103,16 @@ const Home = () => {
         </div>
       </div>
       <div className="bg-[#FEFEFE]">
-        <div className="mx-auto max-w-[1440px] px-4 md:px-0 py-24 w-full">
-          <div className="md:w-[50%]">
+        <div className="mx-auto max-w-[1440px] px-4 lg:px-0 py-24 w-full">
+          <div className="lg:w-[50%]">
             <h3 className="text-[20px] leading-[50px] font-[700] text-[#D50E3C]">
               Our services
             </h3>
-            <h3 className="text-[40px] leading-[50px] font-[700] text-[#000000]">
+            <h3 className="md:text-[40px] text-[20px] md:leading-[50px] leading-[25px]">
               Experience that grows with your scale
             </h3>
           </div>
-          <div className="grid md:grid-cols-3 grid-cols-1 py-24 gap-12">
+          <div className="grid md:grid-cols-3 grid-cols-1 py-24 lg:gap-12">
             <div className="flex flex-col gap-2">
               <div className="w-[60px] h-[60px] flex justify-center items-center rounded-[8px] bg-[#d50e3c11]">
                 <svg
@@ -124,7 +131,7 @@ const Home = () => {
               <h3 className="text-[20px] leading-[50px] font-[700] text-[#000000]">
                 Unified Dashboard
               </h3>
-              <p className="text-[18px] md:w-[70%] text-[#000] leading-[28.8px]">
+              <p className="text-[18px] lg:w-[70%] md:w-[85%] text-[#000] leading-[28.8px]">
                 Bring All Your Social Accounts Together for Seamless Management.
                 Access all your social profiles in one dashboard.
               </p>
@@ -148,7 +155,7 @@ const Home = () => {
               <h3 className="text-[20px] leading-[50px] font-[700] text-[#000000]">
                 Advanced Scheduling
               </h3>
-              <p className="text-[18px] md:w-[70%] text-[#000] leading-[28.8px]">
+              <p className="text-[18px] lg:w-[70%] md:w-[85%] text-[#000] leading-[28.8px]">
                 Plan Ahead and Post Consistently Without the Hassle. Schedule
                 posts across multiple channels in advance.
               </p>
@@ -174,7 +181,7 @@ const Home = () => {
               <h3 className="text-[20px] leading-[50px] font-[700] text-[#000000]">
                 Analytics & Insights
               </h3>
-              <p className="text-[18px] md:w-[70%] text-[#000] leading-[28.8px]">
+              <p className="text-[18px] lg:w-[70%] md:w-[85%] text-[#000] leading-[28.8px]">
                 Track Performance and Refine Your Strategy with Ease. Dive into
                 detailed analytics to measure engagement.
               </p>
@@ -182,16 +189,43 @@ const Home = () => {
           </div>
         </div>
       </div>
+      <div className="slider-container py-6 mx-auto max-w-[1440px]">
+        <Swiper
+          modules={[Navigation, Pagination, A11y, Autoplay]}
+          spaceBetween={50}
+          slidesPerView={1}
+          navigation
+          pagination={{ clickable: true }}
+          loop
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false, 
+          }}
+        >
+          <SwiperSlide>
+            <img src={banner1} alt="Slide 1" className="w-full h-[500px]" />
+          </SwiperSlide>
+          <SwiperSlide>
+            <img src={banner2} alt="Slide 2" className="w-full h-[500px]" />
+          </SwiperSlide>
+          <SwiperSlide>
+            <img src={banner3} alt="Slide 2" className="w-full h-[500px]" />
+          </SwiperSlide>
+          <SwiperSlide>
+            <img src={banner4} alt="Slide 2" className="w-full h-[500px]" />
+          </SwiperSlide>
+        </Swiper>
+      </div>
 
-      <div className="mx-auto md:px-0 px-4 max-w-[1440px] flex md:flex-row-reverse flex-col-reverse justify-between items-center py-24 w-full">
-        <div className="md:w-[50%]">
-          <img src={People} alt="" className="w-[598px]" />
+      <div className="mx-auto lg:px-0 px-4 max-w-[1440px] flex md:flex-row-reverse flex-col-reverse justify-between items-center py-24 w-full">
+        <div className="md:w-[50%] w-full">
+          <div  className="lg:w-[598px] w-full h-[300px] bg-gray-400" />
         </div>
         <div className="md:w-[40%]">
           <h3 className="text-[20px] leading-[50px] font-[700] text-[#D50E3C]">
             How It Works
           </h3>
-          <h3 className="text-[40px] leading-[50px] font-[700] text-[#000000]">
+          <h3 className="lg:text-[40px] mb-6 text-[20px] lg:leading-[50px] leading-[25px]">
             Follow simple steps to get your ready-to-use social media account
             instantly!
           </h3>
@@ -201,14 +235,14 @@ const Home = () => {
       <div className="bg-[#d50e3c20]">
         <div className="mx-auto md:px-0 px-4 max-w-[1440px] py-24 w-full">
           <div className="w-[100%] flex justify-center items-center flex-col">
-            <h3 className="text-[20px] leading-[50px] font-[700] text-[#D50E3C]">
+            <h3 className="lg:text-[20px] leading-[50px] font-[700] text-[#D50E3C]">
               TESTIMONIAL
             </h3>
-            <h3 className="text-[40px] leading-[50px] font-[700] text-[#000000]">
+            <h3 className="md:text-[40px] text-[20px] md:leading-[50px] leading-[25px]">
               What Our Clients say!
             </h3>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 py-24 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 py-24 lg:gap-12 md:gap-0 gap-6">
             <div className="flex flex-col justify-center items-center gap-2">
               <div className="gap-2 flex justify-center items-center rounded-[8px] mb-2">
                 {/* Star */}
@@ -497,9 +531,9 @@ const Home = () => {
       </div>
 
       <div className="bg-[#FCFBFF]">
-        <div className="mx-auto md:px-0 px-4 max-w-[1440px] py-24 w-full">
+        <div className="mx-auto lg:px-0 px-4 max-w-[1440px] py-24 w-full">
           <div className="w-[100%] flex justify-center items-center flex-col">
-            <h3 className="text-[20px] leading-[50px] font-[700] text-[#D50E3C]">
+            <h3 className="lg:text-[20px] lg:leading-[50px] font-[700] text-[#D50E3C]">
               Features
             </h3>
             <h3 className="text-[16px] w-[400px] text-[#787878] text-center font-[500]">
@@ -507,7 +541,7 @@ const Home = () => {
               than the competition).
             </h3>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-4 py-24 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 py-24 gap-12">
             <div className="flex flex-col justify-around bg-[#F9F8F9] gap-2 py-10 px-4">
               <div className="w-[64px]  h-[64px] flex justify-center items-center rounded-[8px] bg-[#FCFBFF]">
                 <svg
@@ -765,17 +799,19 @@ const Home = () => {
         </div>
       </div>
 
+      
+
       <div className="bg-white">
         <div className="mx-auto max-w-[1440px] flex flex-col-reverse md:flex-row-reverse bg-[#FBFAE8] justify-between items-center md:px-12 px-4 w-full">
           <div className="md:w-[40%] relative flex items-center justify-center">
-            <img src={Mobile} alt="" className="relative z-50 w-[310px] md:mt-0 mt-2 h-[468px]" />
-            <img src={Chart} alt="" className="hidden md:block absolute z-20 md:w-[412px] left-1/2 -translate-x-1/2 -top-25 h-[412px]" />
+            <img src={Mobile} alt="" className="relative z-50 w-[310px] md:mt-0 mt-2 lg:h-[468px]" />
+            <img src={Chart} alt="" className="hidden md:block absolute z-20 md:w-[412px] left-1/2 -translate-x-1/2 -top-25 lg:h-[412px]" />
           </div>
           <div className="md:w-[60%]">
-            <h3 className="md:text-[20px] leading-[50px] font-[700] text-[#D50E3C]">
+            <h3 className="lg:text-[20px] leading-[50px] font-[700] text-[#D50E3C]">
             TRY IT NOW
             </h3>
-            <h3 className="md:text-[40px] text-[20px] md:leading-[50px] leading-[25px] font-[700] text-[#000000]">
+            <h3 className="lg:text-[40px] text-[20px] lg:leading-[50px] leading-[25px] font-[700] text-[#000000]">
             Ready to level up your social media accounts management ?
             </h3>
             <p className='text-[18px] text-[#000] mt-3'>Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.</p>

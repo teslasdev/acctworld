@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import SidebarLinkGroup from './SidebarLinkGroup';
 import Logo from '../../images/logo/logo.png';
+import { useGetMeQuery } from '../../api/fetch';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -19,6 +19,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const [sidebarExpanded, setSidebarExpanded] = useState(
     storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true',
   );
+
+  const { data } = useGetMeQuery();
 
   // close on click outside
   useEffect(() => {
@@ -97,9 +99,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         <nav className="mt-5 py-4 px-4 lg:mt-9 lg:px-6">
           {/* <!-- Menu Group --> */}
           <div>
-            <h3 className="mb-4 ml-4 text-sm font-semibold text-white">
-              MENU
-            </h3>
+            <h3 className="mb-4 ml-4 text-sm font-semibold text-white">MENU</h3>
 
             <ul className="mb-6 flex flex-col gap-1.5">
               {/* <!-- Menu Item Dashboard --> */}
@@ -109,11 +109,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               {/* <!-- Menu Item Calendar --> */}
               <li>
                 <NavLink
-                  to="/dashboard"
+                  to={`${data.user.is_admin ? '/admin' : '/dashboard'}`}
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 hover:text-graydark duration-300 ease-in-out hover:bg-white dark:bg-meta-4 ${
-                    pathname === '/' ||
-                    (pathname.includes('dashboard') &&
-                      'bg-white text-graydark dark:text-white dark:bg-meta-4')
+                    pathname === '/dashboard' || pathname === '/admin' &&
+                    'bg-white text-graydark dark:text-white dark:bg-meta-4'
                   }`}
                 >
                   <svg
@@ -149,7 +148,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               {/* <!-- Menu Item Profile --> */}
               <li>
                 <NavLink
-                  to="/products"
+                  to={`${
+                    data.user.is_admin
+                      ? '/admin/products'
+                      : '/dashboard/products'
+                  }`}
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 hover:text-graydark duration-300 ease-in-out hover:bg-white dark:bg-meta-4 ${
                     pathname.includes('products') &&
                     'bg-white text-graydark dark:text-white dark:bg-meta-4'
@@ -178,11 +181,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               {/* <!-- Menu Item Profile --> */}
 
               {/* <!-- Menu Item Forms --> */}
-              
+
               {/* <!-- Menu Item Forms --> */}
               <li>
                 <NavLink
-                  to="/orders"
+                  to={`${
+                    data.user.is_admin ? '/admin/orders' : '/dashboard/orders'
+                  }`}
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 hover:text-graydark duration-300 ease-in-out hover:bg-white dark:bg-meta-4 ${
                     pathname.includes('orders') &&
                     'bg-white text-graydark dark:text-white dark:bg-meta-4'
@@ -219,7 +224,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               {/* <!-- Menu Item Tables --> */}
               <li>
                 <NavLink
-                  to="/transactions"
+                  to={`${
+                    data.user.is_admin
+                      ? '/admin/transactions'
+                      : '/dashboard/transactions'
+                  }`}
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 hover:text-graydark duration-300 ease-in-out hover:bg-white dark:bg-meta-4 ${
                     pathname.includes('transactions') &&
                     'bg-white text-graydark dark:text-white dark:bg-meta-4'
@@ -258,9 +267,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               {/* <!-- Menu Item Settings --> */}
               <li>
                 <NavLink
-                  to="/settings"
+                  to="/dashboard/settings"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 hover:text-graydark duration-300 ease-in-out hover:bg-white dark:bg-meta-4 ${
-                    pathname.includes('settings') &&
+                    pathname.includes('/dashboard/settings') &&
                     'bg-white text-graydark dark:text-white dark:bg-meta-4'
                   }`}
                 >
