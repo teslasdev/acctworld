@@ -137,7 +137,7 @@ const Overview: React.FC = () => {
         </CardDataStats>
       </div>
 
-      <div className="slider-container py-6">
+      <div className="slider-container h-[200px] md:h-[500px]  py-6">
         <Swiper
           modules={[Navigation, Pagination, A11y, Autoplay]}
           spaceBetween={50}
@@ -147,25 +147,51 @@ const Overview: React.FC = () => {
           loop
           autoplay={{
             delay: 3000,
-            disableOnInteraction: false, 
+            disableOnInteraction: false,
           }}
         >
           <SwiperSlide>
-            <img src={banner1} alt="Slide 1" className="w-full h-[500px]" />
+            <img
+              src={banner1}
+              alt="Slide 1"
+              className="w-full h-full"
+              onClick={() => (window.location.href = '/auth/sigin')}
+            />
           </SwiperSlide>
           <SwiperSlide>
-            <img src={banner2} alt="Slide 2" className="w-full h-[500px]" />
+            <img
+              src={banner2}
+              alt="Slide 2"
+              className="w-full h-full"
+              onClick={() =>
+                (window.location.href = 'https://ig.me/m/acctworld_')
+              }
+            />
           </SwiperSlide>
           <SwiperSlide>
-            <img src={banner3} alt="Slide 2" className="w-full h-[500px]" />
+            <img
+              src={banner3}
+              alt="Slide 2"
+              className="w-full h-full"
+              onClick={() =>
+                (window.location.href = 'https://t.me/@acctworld_')
+              }
+            />
           </SwiperSlide>
           <SwiperSlide>
-            <img src={banner4} alt="Slide 2" className="w-full h-[500px]" />
+            <img
+              src={banner4}
+              alt="Slide 2"
+              className="w-full h-full"
+              onClick={() =>
+                (window.location.href = 'https://engainsmedia.com/')
+              }
+            />
           </SwiperSlide>
         </Swiper>
       </div>
 
-      <div className="mt-4 w-full flex flex-col gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
+      <div className="mt-4 pt-6 w-full flex flex-col gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
         <div className="flex items-center w-full justify-between">
           <h3>Transaction History</h3>
           <button

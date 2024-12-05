@@ -1,16 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import {
   Navigate,
   Route,
   Routes,
   useLocation,
-  useNavigate,
 } from 'react-router-dom';
 import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
 import SignIn from './pages/Authentication/SignIn';
 import SignUp from './pages/Authentication/SignUp';
-import Chart from './pages/Chart';
 import Settings from './pages/Settings';
 import DefaultLayout from './layout/DefaultLayout';
 import AuthLayout from './layout/AuthLayout';
@@ -26,6 +24,12 @@ import OverviewDashboard from './pages/Admin/Dashboard';
 import AdminTransactions from './pages/Admin/Transactions';
 import AdminOrders from './pages/Admin/Orders';
 import AdminProducts from './pages/Admin/Products';
+import AddProducts from './pages/Admin/AddProducts';
+import AddCategory from './pages/Admin/AddCategory';
+import AddType from './pages/Admin/AddType';
+import PrivacyPolicy from './pages/Privacy';
+import TermsAndConditions from './pages/Terms';
+import FaqSection from './pages/FAQs';
 
 interface ProtectedRouteProps {
   isAuthenticated: boolean;
@@ -46,7 +50,7 @@ function App() {
   const { pathname } = useLocation();
   const { data, isLoading } = useGetMeQuery();
 
-  console.log(data?.user)
+  console.log(data?.user);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
@@ -62,6 +66,36 @@ function App() {
             <>
               <PageTitle title="Home" />
               <Home />
+            </>
+          }
+        />
+
+        <Route
+          path="privacy"
+          element={
+            <>
+              <PageTitle title="Privacy policy" />
+              <PrivacyPolicy />
+            </>
+          }
+        />
+
+        <Route
+          path="terms"
+          element={
+            <>
+              <PageTitle title="Terms and Conditions" />
+              <TermsAndConditions />
+            </>
+          }
+        />
+
+        <Route
+          path="faqs"
+          element={
+            <>
+              <PageTitle title="Frequently Asked Questions" />
+              <FaqSection />
             </>
           }
         />
@@ -155,7 +189,9 @@ function App() {
       <Route
         path="admin"
         element={
-          <ProtectedRoute isAuthenticated={data?.success && data?.user.is_admin}>
+          <ProtectedRoute
+            isAuthenticated={data?.success && data?.user.is_admin}
+          >
             <DefaultLayout />
           </ProtectedRoute>
         }
@@ -171,7 +207,7 @@ function App() {
           }
         />
         <Route
-          path="products"
+          path="products/all"
           element={
             <>
               <PageTitle title="Products" />
@@ -203,6 +239,35 @@ function App() {
             <>
               <PageTitle title="Settings" />
               <Settings />
+            </>
+          }
+        />
+        <Route
+          path="products/add-product"
+          element={
+            <>
+              <PageTitle title="Product" />
+              <AddProducts />
+            </>
+          }
+        />
+
+        <Route
+          path="products/category"
+          element={
+            <>
+              <PageTitle title="Product Category" />
+              <AddCategory />
+            </>
+          }
+        />
+
+        <Route
+          path="products/type"
+          element={
+            <>
+              <PageTitle title="Product Type" />
+              <AddType />
             </>
           }
         />

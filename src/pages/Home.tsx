@@ -8,7 +8,7 @@ import banner1 from '../images/brand/Banners-02.jpg';
 import banner2 from '../images/brand/Banners-03.jpg';
 import banner3 from '../images/brand/Banners-04.jpg';
 import banner4 from '../images/brand/Banners-05.jpg';
-
+import feature from '../images/brand/feature.png';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, A11y, Autoplay } from 'swiper/modules';
 
@@ -49,7 +49,7 @@ const Home = () => {
 
             <div className="my-6 w-full md:w-[70%]">
               <h3 className="lg:text-[50px] text-[30px] lg:leading-[40px] font-[800] text-[#000000]">
-                Social Media Account
+                One world, many accounts
               </h3>
               <h3 className="lg:text-[40px] text-[25px] leading-[70px] font-[700] text-[#000000] md:mt-3 bg-gradient-to-r from-gradient-start bg-clip-text text-transparent to-gradient-end">
                 <Typewriter
@@ -71,7 +71,10 @@ const Home = () => {
                 Schedule, track, and engage – all with a single, powerful
                 platform.
               </p>
-              <button onClick={() => window.location.href = '/auth/signup'} className="text-white px-4 py-2 mt-6 font-[500] rounded-[16px] bg-gradient-to-r from-gradient-start to-gradient-end">
+              <button
+                onClick={() => (window.location.href = '/auth/signup')}
+                className="text-white px-4 py-2 mt-6 font-[500] rounded-[16px] bg-gradient-to-r from-gradient-start to-gradient-end"
+              >
                 Get Started Now
               </button>
             </div>
@@ -81,7 +84,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div className="mx-auto max-w-[1440px] lg:px-0 px-4 flex md:flex-row flex-col gap-4  justify-between items-center lg:py-24 py-12 w-full">
+      <div id='about' className="mx-auto max-w-[1440px] lg:px-0 px-4 flex md:flex-row flex-col gap-4  justify-between items-center lg:py-24 py-12 w-full">
         <div className="md:w-[50%]">
           <img src={People} alt="" className="w-[598px]" />
         </div>
@@ -104,17 +107,9 @@ const Home = () => {
       </div>
       <div className="bg-[#FEFEFE]">
         <div className="mx-auto max-w-[1440px] px-4 lg:px-0 py-24 w-full">
-          <div className="lg:w-[50%]">
-            <h3 className="text-[20px] leading-[50px] font-[700] text-[#D50E3C]">
-              Our services
-            </h3>
-            <h3 className="md:text-[40px] text-[20px] md:leading-[50px] leading-[25px]">
-              Experience that grows with your scale
-            </h3>
-          </div>
-          <div className="grid md:grid-cols-3 grid-cols-1 py-24 lg:gap-12">
-            <div className="flex flex-col gap-2">
-              <div className="w-[60px] h-[60px] flex justify-center items-center rounded-[8px] bg-[#d50e3c11]">
+          <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 py-24 gap-6 lg:gap-12">
+            <div className="flex flex-col gap-6 bg-white shadow-3 p-6 rounded-md">
+              <div className="w-[40px] h-[40px] flex justify-center items-center rounded-[8px] bg-[#d50e3c11]">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -128,17 +123,19 @@ const Home = () => {
                   />
                 </svg>
               </div>
-              <h3 className="text-[20px] leading-[50px] font-[700] text-[#000000]">
-                Unified Dashboard
+              <h3 className="text-[30px]  font-[800] text-[#D50E3C] mt-2">
+                350.000+
               </h3>
-              <p className="text-[18px] lg:w-[70%] md:w-[85%] text-[#000] leading-[28.8px]">
-                Bring All Your Social Accounts Together for Seamless Management.
-                Access all your social profiles in one dashboard.
+              <h3 className="text-[20px]  font-[700] text-[#000000]">
+                Users we Empowered Dashboard
+              </h3>
+              <p className="text-[18px]  text-[#000] leading-[28.8px]">
+                Proudly serving a thriving community of passionate users!
               </p>
             </div>
 
-            <div className="flex flex-col gap-2">
-              <div className="w-[60px] h-[60px] flex justify-center items-center rounded-[8px] bg-[#d50e3c11]">
+            <div className="flex flex-col gap-6 bg-white shadow-3 p-6 rounded-md">
+              <div className="w-[40px] h-[40px] flex justify-center items-center rounded-[8px] bg-[#d50e3c11]">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -152,17 +149,19 @@ const Home = () => {
                   />
                 </svg>
               </div>
-              <h3 className="text-[20px] leading-[50px] font-[700] text-[#000000]">
-                Advanced Scheduling
+              <h3 className="text-[30px]  font-[800] text-[#D50E3C] mt-2">
+                480.000+
               </h3>
-              <p className="text-[18px] lg:w-[70%] md:w-[85%] text-[#000] leading-[28.8px]">
-                Plan Ahead and Post Consistently Without the Hassle. Schedule
-                posts across multiple channels in advance.
+              <h3 className="text-[20px]  font-[700] text-[#000000]">
+                Orders Completed
+              </h3>
+              <p className="text-[18px]  text-[#000] leading-[28.8px]">
+                Accounts , Boosting, Coaching and we're just getting started
               </p>
             </div>
 
-            <div className="flex flex-col gap-2">
-              <div className="w-[60px] h-[60px] flex justify-center items-center rounded-[8px] bg-[#d50e3c11]">
+            <div className="flex flex-col gap-6 bg-white shadow-3 p-6 rounded-md">
+              <div className="w-[40px] h-[40px] flex justify-center items-center rounded-[8px] bg-[#d50e3c11]">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -178,12 +177,45 @@ const Home = () => {
                   />
                 </svg>
               </div>
-              <h3 className="text-[20px] leading-[50px] font-[700] text-[#000000]">
-                Analytics & Insights
+              <h3 className="text-[30px]  font-[800] text-[#D50E3C] mt-2">
+                2024
               </h3>
-              <p className="text-[18px] lg:w-[70%] md:w-[85%] text-[#000] leading-[28.8px]">
-                Track Performance and Refine Your Strategy with Ease. Dive into
-                detailed analytics to measure engagement.
+              <h3 className="text-[20px]  font-[700] text-[#000000]">
+                Operating Since
+              </h3>
+              <p className="text-[18px]  text-[#000] leading-[28.8px]">
+                Thats all it took us to revolutionalize the account logs
+                industry
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-6 bg-white shadow-3 p-6 rounded-md">
+              <div className="w-[40px] h-[40px] flex justify-center items-center rounded-[8px] bg-[#d50e3c11]">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#D50E3C"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M23 21v-2a4 4 0 00-3-3.87" />
+                  <path d="M16 3.13a4 4 0 010 7.75" />
+                </svg>
+              </div>
+              <h3 className="text-[30px]  font-[800] text-[#D50E3C] mt-2">
+                150.000+
+              </h3>
+              <h3 className="text-[20px]  font-[700] text-[#000000]">
+                Partners
+              </h3>
+              <p className="text-[18px]  text-[#000] leading-[28.8px]">
+                The very best partners stand ready to fulfill your orders
               </p>
             </div>
           </div>
@@ -199,35 +231,65 @@ const Home = () => {
           loop
           autoplay={{
             delay: 3000,
-            disableOnInteraction: false, 
+            disableOnInteraction: false,
           }}
         >
           <SwiperSlide>
-            <img src={banner1} alt="Slide 1" className="w-full h-[500px]" />
+            <img
+              src={banner1}
+              alt="Slide 1"
+              className="w-full h-[200px] md:h-[500px]"
+              onClick={() => window.location.href="/auth/sigin"}
+            />
           </SwiperSlide>
           <SwiperSlide>
-            <img src={banner2} alt="Slide 2" className="w-full h-[500px]" />
+            <img
+              src={banner2}
+              alt="Slide 2"
+              className="w-full h-[200px] md:h-[500px]"
+              onClick={() => window.location.href="https://ig.me/m/acctworld_"}
+            />
           </SwiperSlide>
           <SwiperSlide>
-            <img src={banner3} alt="Slide 2" className="w-full h-[500px]" />
+            <img
+              src={banner3}
+              alt="Slide 2"
+              className="w-full h-[200px] md:h-[500px]"
+              onClick={() => window.location.href="https://t.me/@acctworld_"}
+            />
           </SwiperSlide>
           <SwiperSlide>
-            <img src={banner4} alt="Slide 2" className="w-full h-[500px]" />
+            <img
+              src={banner4}
+              alt="Slide 2"
+              className="w-full h-[200px] md:h-[500px]"
+              onClick={() => window.location.href="https://engainsmedia.com/"}
+            />
           </SwiperSlide>
         </Swiper>
       </div>
 
       <div className="mx-auto lg:px-0 px-4 max-w-[1440px] flex md:flex-row-reverse flex-col-reverse justify-between items-center py-24 w-full">
         <div className="md:w-[50%] w-full">
-          <div  className="lg:w-[598px] w-full h-[300px] bg-gray-400" />
+          <div className="lg:w-[600px] w-full md:h-[500px] bg-gray-400">
+            <img src={feature} className='w-full h-full' />
+          </div>
         </div>
         <div className="md:w-[40%]">
           <h3 className="text-[20px] leading-[50px] font-[700] text-[#D50E3C]">
             How It Works
           </h3>
-          <h3 className="lg:text-[40px] mb-6 text-[20px] lg:leading-[50px] leading-[25px]">
-            Follow simple steps to get your ready-to-use social media account
-            instantly!
+          <h3 className="lg:text-[18px] mb-6 text-[14px] leading-9">
+            <b>
+              Follow simple steps to get your ready-to-use social media account
+              instantly!{' '}
+            </b>
+            <p>1. Take a few minutes to sign up. It's totally free!</p>
+            <p>2. Fund your wallet, easily </p>
+            <p>3. Choose the service you want to purchase </p>
+            <p>4. Enterthe quantity </p>
+            <p>5. Click on place order button </p>
+            <p>6. Tell your friends about Acctworld!!!</p>
           </h3>
         </div>
       </div>
@@ -327,15 +389,16 @@ const Home = () => {
                 </svg>
               </div>
 
-              <p className="text-[18px] w-[80%] text-center text-[#000] leading-[28.8px]">
-                Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                commodo consequat. Duis aute irure dolor in reprehenderit in
-                voluptate velit esse cillum dolore .
+              <p className="text-[18px] h-[250px] w-[80%] text-center text-[#000] leading-[28.8px]">
+                As a small business owner, I was struggling to reach new
+                customers online. This platform completely turned things around!
+                Within weeks, my engagement skyrocketed, and I gained hundreds
+                of new followers. It’s like having a dedicated marketing team
+                working 24/7 to boost my online presence. Highly recommended!
               </p>
               <h3 className="text-[20px]  font-[700] text-[#000000]">
-                Lara Smith
+                Sarah T.
               </h3>
-              <p className="text-[#000000] text-[16px]">2 months ago</p>
             </div>
 
             <div className="flex flex-col justify-center items-center gap-2">
@@ -422,15 +485,16 @@ const Home = () => {
                 </svg>
               </div>
 
-              <p className="text-[18px] w-[80%] text-center text-[#000] leading-[28.8px]">
-                Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                commodo consequat. Duis aute irure dolor in reprehenderit in
-                voluptate velit esse cillum dolore .
+              <p className="text-[18px] h-[250px] w-[80%] text-center text-[#000] leading-[28.8px]">
+                This platform has been a game-changer for my music career. It
+                helped me reach thousands of new fans and boosted my streams on
+                every platform. The growth was organic, and now I feel more
+                confident releasing new music because I know the audience is
+                there. Thank you for helping me grow!
               </p>
               <h3 className="text-[20px]  font-[700] text-[#000000]">
-                Lara Smith
+                Jason R., Independent Musician
               </h3>
-              <p className="text-[#000000] text-[16px]">2 months ago</p>
             </div>
             <div className="flex flex-col justify-center items-center gap-2">
               <div className="gap-2 flex justify-center items-center rounded-[8px] mb-2">
@@ -516,15 +580,16 @@ const Home = () => {
                 </svg>
               </div>
 
-              <p className="text-[18px] w-[80%] text-center text-[#000] leading-[28.8px]">
-                Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                commodo consequat. Duis aute irure dolor in reprehenderit in
-                voluptate velit esse cillum dolore .
+              <p className="text-[18px] h-[250px] w-[80%] text-center text-[#000] leading-[28.8px]">
+                As a content creator, staying relevant on social media is tough,
+                but this platform made it so much easier! I’ve seen my followers
+                grow consistently, and the engagement on my posts has tripled.
+                It’s the perfect tool for anyone looking to take their social
+                media game to the next level!
               </p>
               <h3 className="text-[20px]  font-[700] text-[#000000]">
-                Lara Smith
+                Amanda C., Lifestyle Blogger
               </h3>
-              <p className="text-[#000000] text-[16px]">2 months ago</p>
             </div>
           </div>
         </div>
@@ -573,7 +638,7 @@ const Home = () => {
                 </svg>
               </div>
               <h3 className="text-[24px] leading-[30px] font-[700] text-[#000000]">
-                Fully Configured Accounts
+                24hrs support
               </h3>
               <p className="text-[16px] w-[80%] h-[120px] flex items-start mt-4 text-[#787878] leading-[28.8px]">
                 We reply at record-breaking speed. Most companies take an
@@ -629,7 +694,7 @@ const Home = () => {
                 </svg>
               </div>
               <h3 className="text-[24px] leading-[30px] font-[700] text-[#000000]">
-                Time-Saving Convenience:
+                Instant payment
               </h3>
               <p className="text-[16px] w-[80%] h-[120px] flex items-start mt-4 text-[#787878] leading-[28.8px]">
                 Agorapulse customers are happy customers. Our customers give us
@@ -679,7 +744,7 @@ const Home = () => {
                 </svg>
               </div>
               <h3 className="text-[24px] leading-[30px] font-[700] text-[#000000]">
-                Enhanced Security
+                Time saving convenience
               </h3>
               <p className="text-[16px] h-[120px] flex items-start mt-4 w-[80%]  text-[#787878] leading-[28.8px]">
                 We reply at record-breaking speed. Most companies take an
@@ -788,7 +853,7 @@ const Home = () => {
                 </svg>
               </div>
               <h3 className="text-[24px] leading-[30px] font-[700] text-[#000000]">
-                Scalable Solutions
+                Documentation
               </h3>
               <p className="text-[16px] w-[80%] h-[120px] flex items-start mt-4 text-[#787878] leading-[28.8px]">
                 Users rate our support higher than Hootsuite and Sprout Social
@@ -799,22 +864,31 @@ const Home = () => {
         </div>
       </div>
 
-      
-
       <div className="bg-white">
         <div className="mx-auto max-w-[1440px] flex flex-col-reverse md:flex-row-reverse bg-[#FBFAE8] justify-between items-center md:px-12 px-4 w-full">
           <div className="md:w-[40%] relative flex items-center justify-center">
-            <img src={Mobile} alt="" className="relative z-50 w-[310px] md:mt-0 mt-2 lg:h-[468px]" />
-            <img src={Chart} alt="" className="hidden md:block absolute z-20 md:w-[412px] left-1/2 -translate-x-1/2 -top-25 lg:h-[412px]" />
+            <img
+              src={Mobile}
+              alt=""
+              className="relative z-50 w-[310px] md:mt-0 mt-2 "
+            />
+            <img
+              src={Chart}
+              alt=""
+              className="hidden md:block absolute z-20 md:w-[412px] left-1/2 -translate-x-1/2 -top-25 lg:h-[412px]"
+            />
           </div>
           <div className="md:w-[60%]">
             <h3 className="lg:text-[20px] leading-[50px] font-[700] text-[#D50E3C]">
-            TRY IT NOW
+              TRY IT NOW
             </h3>
             <h3 className="lg:text-[40px] text-[20px] lg:leading-[50px] leading-[25px] font-[700] text-[#000000]">
-            Ready to level up your social media accounts management ?
+              Ready to level up your social media accounts management ?
             </h3>
-            <p className='text-[18px] text-[#000] mt-3'>Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.</p>
+            <p className="text-[18px] text-[#000] mt-3">
+              Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+              commodo consequat. Duis aute irure dolor in reprehenderit.
+            </p>
           </div>
         </div>
       </div>

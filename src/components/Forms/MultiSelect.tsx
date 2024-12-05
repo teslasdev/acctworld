@@ -12,7 +12,11 @@ interface DropdownProps {
 }
 
 const MultiSelect: React.FC<DropdownProps> = ({ id }) => {
-  const [options, setOptions] = useState<Option[]>([]);
+  const [options, setOptions] = useState<Option[]>([{
+    value: "Option 1",
+    text: 'Option 1',
+    selected: false
+  }]);
   const [selected, setSelected] = useState<number[]>([]);
   const [show, setShow] = useState(false);
   const dropdownRef = useRef<any>(null);

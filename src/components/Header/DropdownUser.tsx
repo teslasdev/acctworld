@@ -21,8 +21,8 @@ const DropdownUser = () => {
           </span>
         </span>
 
-        <span className="h-12 w-12 rounded-full">
-          <img src={UserOne} alt="User" />
+        <span className="h-12 w-12 bg-boxdark text-white font-[700] flex justify-center items-center rounded-full">
+        {data?.user.full_name.charAt(0)}
         </span>
 
         <svg
@@ -101,7 +101,7 @@ const DropdownUser = () => {
           </ul>
           <button onClick={() => {
             Cookies.remove('token'); 
-            window.location.href = '/auth/signin';
+            window.location.href = '/';
           }} className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
             <svg
               className="fill-current"

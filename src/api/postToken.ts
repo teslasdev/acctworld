@@ -10,10 +10,40 @@ const ApiPostToken = createApi({
         headers.set('Authorization', `Bearer ${token}`);
       }
       return headers;
-    }
+    },
   }),
   endpoints: (builder) => ({
-  
+    categories: builder.mutation({
+      query: (data) => ({
+        url: '/api/categories',
+        method: 'POST',
+        body: data,
+      }),
+    }),
+
+    editCategory: builder.mutation({
+      query: (data) => ({
+        url: `/api/categories/${data.id}`,
+        method: 'PUT',
+        body: data,
+      }),
+    }),
+
+    editType: builder.mutation({
+      query: ({id , data}) => ({
+        url: `/api/types/${id}`,
+        method: 'PUT',
+        body: data,
+      }),
+    }),
+
+    types: builder.mutation({
+      query: (data) => ({
+        url: '/api/types',
+        method: 'POST',
+        body: data,
+      }),
+    }),
     payement: builder.mutation({
       query: (data) => ({
         url: '/api/payment/initiate',
@@ -30,14 +60,31 @@ const ApiPostToken = createApi({
       }),
     }),
     verification: builder.mutation({
-        query: (data) => ({
-          url: '/api/payment/verify',
-          method: 'POST',
-          body: data,
-        }),
+      query: (data) => ({
+        url: '/api/payment/verify',
+        method: 'POST',
+        body: data,
       }),
+    }),
+
+    products: builder.mutation({
+      query: (data) => ({
+        url: '/api/product',
+        method: 'POST',
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { usePayementMutation, useVerificationMutation , useOrderMutation } = ApiPostToken;
+export const {
+  usePayementMutation,
+  useVerificationMutation,
+  useOrderMutation,
+  useCategoriesMutation,
+  useTypesMutation,
+  useEditCategoryMutation,
+  useEditTypeMutation,
+  useProductsMutation
+} = ApiPostToken;
 export default ApiPostToken;

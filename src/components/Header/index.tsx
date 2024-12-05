@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
-import DropdownMessage from './DropdownMessage';
-import DropdownNotification from './DropdownNotification';
+// import DropdownMessage from './DropdownMessage';
+// import DropdownNotification from './DropdownNotification';
 import DropdownUser from './DropdownUser';
-import LogoIcon from '../../images/logo/logo-icon.svg';
+import LogoIcon from '../../images/logo/logo_noname.png';
 import DarkModeSwitcher from './DarkModeSwitcher';
-import { useGetMeQuery } from '../../api/fetch';
+
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
@@ -57,8 +57,8 @@ const Header = (props: {
           </button>
           {/* <!-- Hamburger Toggle BTN --> */}
 
-          <Link className="block flex-shrink-0 lg:hidden" to="/">
-            <img src={LogoIcon} alt="Logo" />
+          <Link className="block flex-shrink-0 lg:hidden" to="/dashboard">
+            <img src={LogoIcon} className='w-[40px]' alt="Logo" />
           </Link>
         </div>
 

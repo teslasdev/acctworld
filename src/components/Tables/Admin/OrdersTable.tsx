@@ -48,10 +48,10 @@ const OrdersTable = () => {
                   <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                     <div className="flex items-center gap-2">
                       <div className="w-[40px] h-[40px] bg-gray-400 rounded-[8px]">
-                        <img
-                          src={packageItem.imageUrl}
+                      <img
+                         src={`https://acctworld-server.onrender.com` + packageItem.imageUrl}
                           alt=""
-                          className="w-full h-full"
+                          className="w-full object-cover h-full"
                         />
                       </div>
                       <div>
