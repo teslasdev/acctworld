@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useOrdersQuery } from '../../api/fetch';
+import { baseUrl } from '../../api';
 
 const OrdersTable = () => {
   const { data } = useOrdersQuery();
@@ -43,17 +44,17 @@ const OrdersTable = () => {
                   onClick={() => toggleRow(key)}
                   className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800"
                 >
-                  <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                  <td className="border-b border-[#eee] py-5 px-4 md:pl-9 dark:border-strokedark xl:pl-11">
                     <div className="flex items-center gap-2">
-                      <div className="w-[40px] h-[40px] bg-gray-400 rounded-[8px]">
+                      <div className="w-[40px] hidden md:flex h-[40px] bg-gray-400 rounded-[8px]">
                         <img
-                          src={`https://acctworld-server.onrender.com` + packageItem.imageUrl}
+                          src={packageItem.imageUrl}
                           alt=""
                           className="w-full object-cover h-full"
                         />
                       </div>
                       <div>
-                        <h5 className="font-medium text-black dark:text-white">
+                        <h5 className="font-medium text-sm text-black dark:text-white">
                           {packageItem.name}
                         </h5>
                         <p className="text-sm">Quantity - {packageItem.qty}</p>
@@ -77,26 +78,20 @@ const OrdersTable = () => {
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white">
                       {new Date(packageItem?.createdAt).toLocaleString(
-                        'en-US',
+                        'en-NG',
                         {
                           year: 'numeric',
-                          month: 'long',
+                          month: 'short',
                           day: 'numeric',
                           hour: '2-digit',
                           minute: '2-digit',
-                          second: '2-digit',
+                         
                         },
                       )}
                     </p>
                   </td>
 
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <div className="flex items-center space-x-3.5">
-                      <button className="hover:text-primary">
-                        {/* Your action button */}
-                      </button>
-                    </div>
-                  </td>
+                
                 </tr>
                 {expandedRows.includes(key) && (
                   <tr className="">

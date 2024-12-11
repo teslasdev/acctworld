@@ -5,7 +5,7 @@ import TypeTable from '../../components/Tables/TypeTable';
 const AddType = () => {
   return (
     <>
-      <Breadcrumb pageName="Products" />
+      <Breadcrumb pageName="Product Type" />
       <TypeTable />
     </>
   );

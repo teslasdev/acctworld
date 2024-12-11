@@ -1,9 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import Cookies from 'js-cookie';
+import { baseUrl } from '.';
 const ApiPostToken = createApi({
   reducerPath: 'api-token',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://acctworld-server.onrender.com',
+    baseUrl: `${baseUrl}`,
     prepareHeaders: (headers) => {
       const token = Cookies.get('token');
       if (token) {
@@ -30,7 +31,7 @@ const ApiPostToken = createApi({
     }),
 
     editType: builder.mutation({
-      query: ({id , data}) => ({
+      query: ({ id, data }) => ({
         url: `/api/types/${id}`,
         method: 'PUT',
         body: data,
@@ -74,6 +75,20 @@ const ApiPostToken = createApi({
         body: data,
       }),
     }),
+
+    updateProducts: builder.mutation({
+      query: (data) => ({
+        url: `/api/product/${data.id}`,
+        method: 'PUT',
+        body: data,
+      }),
+    }),
+    deleteProduct: builder.mutation({
+      query: (data) => ({
+        url: `/api/product/delete?product_id=${data.id}`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
@@ -85,6 +100,8 @@ export const {
   useTypesMutation,
   useEditCategoryMutation,
   useEditTypeMutation,
-  useProductsMutation
+  useProductsMutation,
+  useUpdateProductsMutation,
+  useDeleteProductMutation,
 } = ApiPostToken;
 export default ApiPostToken;

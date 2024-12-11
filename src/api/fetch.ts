@@ -1,10 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import Cookies from 'js-cookie';
+import { baseUrl } from '.';
 
 const ApiGet = createApi({
   reducerPath: 'api-get',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://acctworld-server.onrender.com',
+    baseUrl: `${baseUrl}`,
     prepareHeaders: (headers) => {
       const token = Cookies.get('token');
       if (token) {
@@ -85,6 +86,13 @@ const ApiGet = createApi({
         method: 'GET',
       }),
     }),
+
+    getProductById: builder.query<any, {id : any}>({
+      query: (id) => ({
+        url: `/api/product/one?product_id=${id}`,
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
@@ -99,6 +107,7 @@ export const {
   useGetPaymentsQuery,
   useGetAalysticsQuery,
   useGetUsersQuery,
-  useGetOrdersQuery
+  useGetOrdersQuery,
+  useGetProductByIdQuery
 } = ApiGet;
 export default ApiGet;

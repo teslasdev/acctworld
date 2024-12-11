@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useGetOrdersQuery } from '../../../api/fetch';
+import { baseUrl } from '../../../api';
 
 
 const OrdersTable = () => {
@@ -24,6 +25,10 @@ const OrdersTable = () => {
               <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
                 Package
               </th>
+
+              <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
+                Ordered By
+              </th>
               <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
                 Status
               </th>
@@ -32,7 +37,7 @@ const OrdersTable = () => {
                 Amount
               </th>
               
-              <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
+              <th className="min-w-[150px]  py-4 px-4 font-medium text-black dark:text-white">
                 Invoice date
               </th>
              
@@ -45,22 +50,30 @@ const OrdersTable = () => {
                   onClick={() => toggleRow(key)}
                   className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800"
                 >
-                  <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                  <td className="border-b border-[#eee] py-5 px-4 md:pl-9 dark:border-strokedark xl:pl-11">
                     <div className="flex items-center gap-2">
-                      <div className="w-[40px] h-[40px] bg-gray-400 rounded-[8px]">
+                      <div className="w-[40px] hidden md:flex h-[40px] bg-gray-400 rounded-[8px]">
                       <img
-                         src={`https://acctworld-server.onrender.com` + packageItem.imageUrl}
+                         src={packageItem.imageUrl}
                           alt=""
                           className="w-full object-cover h-full"
                         />
                       </div>
                       <div>
-                        <h5 className="font-medium text-black dark:text-white">
+                        <h5 className="font-medium text-sm text-black dark:text-white">
                           {packageItem.name}
                         </h5>
                         <p className="text-sm">Quantity - {packageItem.qty}</p>
                       </div>
                     </div>
+                  </td>
+
+                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                    <p
+                      className={`inline-flex rounded-full capitalize bg-opacity-10 py-1 px-3 text-sm font-medium `}
+                    >
+                      {packageItem.user.full_name}
+                    </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p
@@ -76,29 +89,23 @@ const OrdersTable = () => {
                       NGN {packageItem.price.toLocaleString() ?? 0}
                     </p>
                   </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  <td className="border-b  w-fit border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white">
                       {new Date(packageItem?.createdAt).toLocaleString(
                         'en-US',
                         {
                           year: 'numeric',
-                          month: 'long',
+                          month: 'short',
                           day: 'numeric',
                           hour: '2-digit',
                           minute: '2-digit',
-                          second: '2-digit',
+                          
                         },
                       )}
                     </p>
                   </td>
 
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <div className="flex items-center space-x-3.5">
-                      <button className="hover:text-primary">
-                        {/* Your action button */}
-                      </button>
-                    </div>
-                  </td>
+                  
                 </tr>
                 {expandedRows.includes(key) && (
                   <tr className="">

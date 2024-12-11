@@ -238,13 +238,13 @@ const Overview: React.FC = () => {
                 >
                   {isLoading ? 'Processing....' : 'Make Payment'}
                 </button>
-                <iframe
+                {/* <iframe
                   width="100%"
                   height="315"
                   src="https://www.youtube.com/embed/iiHl_50dhgU"
                   title="How to make a deposit on RediProfiles.com"
                   allowFullScreen={true}
-                ></iframe>
+                ></iframe> */}
               </>
             )}
           </Modal>

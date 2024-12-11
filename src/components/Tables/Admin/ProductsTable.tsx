@@ -1,20 +1,13 @@
-import { Link, useNavigate } from 'react-router-dom';
 import SelectGroupTwo from '../../Forms/SelectGroup/SelectGroupTwo';
-import { useAnalysticsQuery, useProductsQuery } from '../../../api/fetch';
+import { useProductsQuery } from '../../../api/fetch';
 import { useState } from 'react';
-import Modal from '../../Modals/ProductDisplay';
-import { LuEye } from 'react-icons/lu';
-import { useOrderMutation } from '../../../api/postToken';
-import Alerts from '../../../pages/UiElements/Alerts';
+import { baseUrl } from '../../../api';
+import DeleteModal from './DeleteModal';
 
 const ProductsTable = ({ typeId }: any) => {
-  const navigate = useNavigate();
   const [category, setFilter] = useState('');
-  const { data: wallet } = useAnalysticsQuery();
-  const { data } = useProductsQuery({ typeId, category });
+  const { data  , refetch} = useProductsQuery({ typeId, category });
   const [isModalOpen, setModalOpen] = useState(false);
-  const [status, setStatus] = useState('');
-  const [message, setMessage] = useState('');
   const [details, setDetails] = useState({
     id: '',
     name: '',
@@ -30,264 +23,105 @@ const ProductsTable = ({ typeId }: any) => {
       name: '',
     },
   });
-
-  const [quantity, setQuantity] = useState(1);
-  const [Tq, setTq] = useState(1);
-
-  const increment = () => {
-    if (quantity < Tq) {
-      setQuantity(quantity + 1);
-    }
-  };
-  const decrement = () => {
-    if (quantity > 1) setQuantity(quantity - 1);
-  };
-
-  const [order, { isLoading }] = useOrderMutation();
-  const handleOrder = async () => {
-    const data = {
-      id: details.id,
-      name: details.name,
-      imageUrl: details.imageUrl,
-      qty: quantity,
-      price: parseInt(details.price) * quantity,
-    };
-    await order(data)
-      .unwrap()
-      .then((data: any) => {
-        setStatus('success');
-      })
-      .catch((err: any) => {
-        console.log(err);
-        setStatus('error');
-        setMessage('An Error Occurred, Try Again');
-      });
-  };
-
-  setTimeout(() => {
-    if (status == 'error') {
-      setMessage('');
-      setStatus('');
-    }
-  }, 3000);
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-      <div className="flex w-[20%] flex-col gap-5.5 p-6.5">
+      <div className="flex md:w-[20%] flex-col gap-5.5 py-6.5">
         <SelectGroupTwo setFilter={setFilter} />
       </div>
-      <div className="max-w-full overflow-x-auto">
-        <table className="w-full table-auto">
-          <thead>
-            <tr className="bg-gray-2 text-left dark:bg-meta-4">
-              <th className="md:w-[60%] w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                Package
-              </th>
-              <th className="md:w-[10%] py-4 px-4 font-medium text-black dark:text-white">
-                Available
-              </th>
-              <th className="md:w-[20%] py-4 px-4 font-medium text-black dark:text-white">
-                Price
-              </th>
-              <th className="py-4 md:w-[10%] px-4 font-medium text-black dark:text-white">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {data?.products.map((packageItem: any, key: number) => {
-              return (
-                <tr key={key}>
-                  <td className="border-b  md:w-[60%] w-fit border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                    <div className="flex flex-wrap items-center gap-4">
-                      <div className="w-[40px] h-[40px] bg-white rounded-[8px]">
-                        <img
-                          src={packageItem.imageUrl ??  `https://acctworld-server.onrender.com` +packageItem.type.imageUrl}
-                          alt=""
-                          className="w-full object-cover h-full"
-                        />
-                      </div>
-                      <div>
-                        <h5 className="font-medium text-black dark:text-white">
-                          {packageItem.type.name} by {packageItem.category.name}
-                        </h5>
-                        <p className="text-sm max-w-[500px]">{packageItem.name}</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="border-b w-[10%] border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white">
-                      {packageItem.itemCount} pcs
-                    </p>
-                  </td>
-                  <td className="border-b w-[20%] border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white">
-                      ₦ {packageItem.price.toLocaleString()}
-                    </p>
-                  </td>
-                  <td className="border-b w-[10%] border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <div className="flex items-center space-x-3.5">
-                      <button className="hover:text-primary">
-                      <svg fill="#a3a3a3" width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21,12a1,1,0,0,0-1,1v6a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V5A1,1,0,0,1,5,4h6a1,1,0,0,0,0-2H5A3,3,0,0,0,2,5V19a3,3,0,0,0,3,3H19a3,3,0,0,0,3-3V13A1,1,0,0,0,21,12ZM6,12.76V17a1,1,0,0,0,1,1h4.24a1,1,0,0,0,.71-.29l6.92-6.93h0L21.71,8a1,1,0,0,0,0-1.42L17.47,2.29a1,1,0,0,0-1.42,0L13.23,5.12h0L6.29,12.05A1,1,0,0,0,6,12.76ZM16.76,4.41l2.83,2.83L18.17,8.66,15.34,5.83ZM8,13.17l5.93-5.93,2.83,2.83L10.83,16H8Z"/></svg>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-        {details && (
-          <Modal
-            isOpen={isModalOpen}
-            onClose={() => setModalOpen(false)}
-            title={details && details?.type.name}
-          >
-            {status == 'success' ? (
-              <div
-                className="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
-                role="alert"
-              >
-                <div className="flex items-center">
-                  <div className="pr-4">
+      <div className="space-y-4 py-6">
+        {data?.products.map((packageItem: any, key: number) => {
+          return (
+            <div
+              className="border border-gray-200 rounded-lg h-fit overflow-hidden"
+              key={key}
+            >
+              <div className="flex flex-wrap items-center justify-between bg-white sm:flex-nowrap">
+                {/* Icon and Title */}
+                <div className="flex md:w-[45%] w-full md:border-r md:border-0 border-b items-center h-full p-4 space-x-4">
+                  <img
+                    src={
+                      packageItem.imageUrl ??
+                      `${baseUrl}` + packageItem.type.imageUrl
+                    }
+                    alt="Instagram Icon"
+                    className="w-[10] h-10"
+                  />
+
+                  <span className="text-sm font-medium text-gray-700">
+                    {packageItem.name}
+                  </span>
+                </div>
+
+                {/* Quantity */}
+                <div className="flex md:w-[20%] justify-center items-center p-6">
+                  <span className="px-3 py-1 bg-blue-100 text-blue-700 text-sm rounded-full">
+                    {packageItem.itemCount} pcs
+                  </span>
+                </div>
+
+                {/* Price */}
+                <div className="text-purple-700 md:w-[20%] border-r border-l  flex p-6 justify-center items-center font-bold">
+                  ₦ {packageItem.price.toLocaleString()}
+                </div>
+
+                {/* Buy Button */}
+                <div className="flex justify-center gap-2 items-center md:w-[15%] p-6">
+                  <button onClick={() => window.location.href=`/admin/products/edit-product/${packageItem.id}`} className="px-4 py-1 text-white text-sm rounded-lg hover:bg-[#d50e3c] focus:outline-none">
+                    <svg
+                      fill="#a3a3a3"
+                      width="24px"
+                      height="24px"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path d="M21,12a1,1,0,0,0-1,1v6a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V5A1,1,0,0,1,5,4h6a1,1,0,0,0,0-2H5A3,3,0,0,0,2,5V19a3,3,0,0,0,3,3H19a3,3,0,0,0,3-3V13A1,1,0,0,0,21,12ZM6,12.76V17a1,1,0,0,0,1,1h4.24a1,1,0,0,0,.71-.29l6.92-6.93h0L21.71,8a1,1,0,0,0,0-1.42L17.47,2.29a1,1,0,0,0-1.42,0L13.23,5.12h0L6.29,12.05A1,1,0,0,0,6,12.76ZM16.76,4.41l2.83,2.83L18.17,8.66,15.34,5.83ZM8,13.17l5.93-5.93,2.83,2.83L10.83,16H8Z" />
+                    </svg>
+                  </button>
+                  <button onClick={() => {
+                    setModalOpen(true);
+                    setDetails(packageItem);
+                  }} className="px-4 py-1 text-white text-sm rounded-lg hover:bg-[#d50e3c] focus:outline-none">
                     <svg
                       width="20px"
                       height="20px"
-                      viewBox="0 -4 30 30"
-                      version="1.1"
+                      viewBox="-10.5 0 141 141"
+                      fill="none"
                       xmlns="http://www.w3.org/2000/svg"
                     >
-                      <title>check</title>
-                      <desc>Created with Sketch.</desc>
-                      <defs>
-                        <linearGradient
-                          x1="50%"
-                          y1="0%"
-                          x2="50%"
-                          y2="100%"
-                          id="linearGradient-1"
-                        >
-                          <stop stop-color="#1DD47F" offset="0%"></stop>
-                          <stop stop-color="#0DA949" offset="100%"></stop>
-                        </linearGradient>
-                      </defs>
-                      <g
-                        id="icons"
-                        stroke="none"
-                        stroke-width="1"
-                        fill="none"
-                        fill-rule="evenodd"
-                      >
-                        <g
-                          id="ui-gambling-website-lined-icnos-casinoshunter"
-                          transform="translate(-735.000000, -1911.000000)"
-                          fill="url(#linearGradient-1)"
-                          fill-rule="nonzero"
-                        >
-                          <g
-                            id="4"
-                            transform="translate(50.000000, 1871.000000)"
-                          >
-                            <path
-                              d="M714.442949,40.6265241 C715.185684,41.4224314 715.185684,42.6860985 714.442949,43.4820059 L697.746773,61.3734759 C697.314529,61.8366655 696.704235,62.0580167 696.097259,61.9870953 C695.539848,62.0082805 694.995328,61.7852625 694.600813,61.3625035 L685.557051,51.6712906 C684.814316,50.8753832 684.814316,49.6117161 685.557051,48.8158087 C686.336607,47.9804433 687.631056,47.9804433 688.410591,48.8157854 L696.178719,57.1395081 L711.589388,40.6265241 C712.368944,39.7911586 713.663393,39.7911586 714.442949,40.6265241 Z"
-                              id="check"
-                            ></path>
-                          </g>
-                        </g>
+                      <g clip-path="url(#clip0)">
+                        <path
+                          d="M11.5444 32.2823C9.35715 31.9305 7.54822 31.7222 5.77811 31.3361C2.60909 30.6453 0.988478 29.1086 0.949674 26.938C0.909576 24.6587 2.59479 22.7092 5.87569 22.292C10.5613 21.6963 15.3053 21.5295 20.0298 21.2921C22.5844 21.1628 25.1505 21.2695 28.108 21.2695C27.6792 19.2916 27.3722 17.7509 27.0087 16.2245C26.2429 13.1665 26.65 9.93253 28.1496 7.15974C30.1545 3.31135 33.2097 0.966791 37.5694 0.821263C45.5316 0.555646 53.4969 0.406041 61.4656 0.372408C66.7407 0.347184 72.0174 0.592906 77.2929 0.718385C78.0463 0.736495 78.8024 0.733267 79.5532 0.788891C84.9341 1.18602 88.3773 3.94844 89.6146 9.22106C90.1746 11.6084 90.2464 14.1134 90.4974 16.5699C90.6267 17.8376 90.6642 19.1143 90.7561 20.58C91.624 20.7109 92.499 20.7908 93.3766 20.8193C99.1889 20.655 104.999 20.4131 110.812 20.2863C112.309 20.2218 113.808 20.3725 115.263 20.734C116.431 21.0072 117.48 21.649 118.255 22.5645C119.03 23.48 119.49 24.6206 119.566 25.8177C119.767 27.0519 119.583 28.318 119.038 29.4433C118.493 30.5687 117.614 31.4986 116.521 32.1065C115.619 32.6562 114.629 33.0624 113.507 33.6199C113.507 36.7542 113.4 39.8628 113.525 42.9615C114.262 61.3478 115.277 79.7315 114.594 98.1391C114.347 104.796 113.896 111.473 112.986 118.065C112.481 121.727 111.005 125.296 109.663 128.789C109.028 130.464 108.025 131.975 106.727 133.211C105.431 134.447 103.872 135.375 102.168 135.928C99.0207 137.007 95.789 137.824 92.5068 138.369C89.515 138.752 86.5044 138.965 83.4893 139.006C71.7672 139.589 60.0488 140.279 48.3201 140.659C43.3757 140.869 38.4223 140.655 33.5143 140.02C20.8881 138.243 14.0254 131.285 12.027 118.648C11.4349 115.148 11.1056 111.607 11.042 108.058C10.9084 87.7206 10.86 67.383 10.8971 47.0453C10.9036 42.2177 11.309 37.3887 11.5444 32.2823ZM21.2127 33.0682C21.7948 43.107 22.226 92.2559 23.3888 107.055C23.7316 111.419 24.7367 115.741 25.5968 120.052C26.4544 124.348 29.3576 126.846 33.5194 127.519C38.1759 128.271 42.9121 128.996 47.6074 128.961C59.3399 128.874 71.0738 128.47 82.7966 127.939C87.285 127.736 91.7507 126.893 96.212 126.238C97.0249 126.136 97.7855 125.78 98.3837 125.22C98.9826 124.66 99.3887 123.925 99.5452 123.121C100.163 120.625 100.962 118.14 101.257 115.602C102.95 101.021 102.602 86.3863 102.154 71.7566C101.802 60.2522 101.392 48.7496 101.003 37.2464C100.967 36.2116 100.896 35.1728 100.848 34.268C73.4015 33.8676 48.8905 33.4724 21.2146 33.0682H21.2127ZM38.4805 21.0379C52.0096 21.5275 65.2704 21.5062 78.6168 20.8833V11.9383C65.1229 11.4855 51.879 10.9991 38.4805 12.3115V21.0379Z"
+                          fill="#a3a3a3"
+                        />
+                        <path
+                          d="M82.2128 77.7577C82.0718 70.8105 81.7413 63.7697 81.4212 56.9597L81.4147 56.8303C81.2996 54.3613 81.1871 51.8924 81.0758 49.4233C81.0267 48.5606 80.8643 47.7079 80.594 46.8872C80.0009 45.0115 78.6628 44.0226 76.9309 44.1862C75.8819 44.2729 74.0749 44.8129 73.7534 47.4479C73.7017 47.922 73.6758 48.3986 73.6758 48.8754C73.5724 57.4389 72.7905 85.75 72.7827 86.0385C72.6365 92.8447 72.4852 99.8798 72.3817 106.859C72.328 108.781 72.5014 110.703 72.8991 112.583C73.0912 113.579 73.6286 114.476 74.4164 115.115C75.2047 115.754 76.1929 116.094 77.207 116.076C77.326 116.076 77.4463 116.072 77.5673 116.063C78.5691 116.035 79.5282 115.652 80.2739 114.982C81.0189 114.312 81.502 113.4 81.6365 112.406C81.9916 110.339 82.1863 108.247 82.2186 106.15L82.2535 101.336C82.3105 93.6124 82.3725 85.6265 82.2128 77.7577Z"
+                          fill="#a3a3a3"
+                        />
+                        <path
+                          d="M47.601 44.6397H47.5978C46.9525 44.6372 46.3163 44.7915 45.7438 45.0896C45.1714 45.3876 44.6799 45.8204 44.3118 46.3504C43.6882 47.4661 43.3364 48.7129 43.2848 49.9899C43.1749 51.7201 43.0595 53.4495 42.9418 55.2211C42.5376 61.3145 42.1187 67.6158 41.9389 73.8347C41.6802 82.6789 41.5929 91.666 41.5056 100.358C41.4794 103.018 41.4512 105.678 41.421 108.338C41.4195 109.427 41.5717 110.511 41.8736 111.557C42.5791 114.058 44.2769 115.611 46.3038 115.611H46.3685C48.4918 115.575 50.1886 113.898 50.6898 111.339C50.9369 109.985 51.0414 108.609 51.0012 107.234C50.8886 100.171 50.7506 93.1097 50.62 86.4012L50.5016 80.3356L50.6371 73.1316C50.7845 65.3281 50.9234 57.9518 51.0353 50.539C51.1016 49.296 50.9176 48.0524 50.494 46.882C50.2342 46.2985 49.8341 45.7884 49.3294 45.3972C48.8246 45.0059 48.2308 44.7458 47.601 44.6397Z"
+                          fill="#a3a3a3"
+                        />
                       </g>
+                      <defs>
+                        <clipPath id="clip0">
+                          <rect
+                            width="119"
+                            height="141"
+                            fill="white"
+                            transform="translate(0.777344)"
+                          />
+                        </clipPath>
+                      </defs>
                     </svg>
-                  </div>
-                  <div>
-                    <p className="font-bold">Order Completed</p>
-                    <p className="text-sm">Your order has been Completed.</p>
-                    <button
-                      onClick={() => navigate('/dashboard/orders')}
-                      className="px-4 mt-2 py-1 bg-white shadow-sm text-black-2 text-[14px]"
-                    >
-                      View Order
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="flex flex-col gap-4">
-                <div className="flex items-center gap-4">
-                  <div className="w-[20%] h-[40px] bg-gray-400 rounded-[8px]">
-                    <img
-                      src={details.imageUrl}
-                      alt=""
-                      className="w-full object-cover h-full"
-                    />
-                  </div>
-                  <div>
-                    <h5 className="font-medium text-black dark:text-white">
-                      {details.name}
-                    </h5>
-                  </div>
-                </div>
-                <div>
-                  <b>Description</b>
-                  <p className="text-gray-700">{details.description}</p>
-                </div>
-
-                <div>
-                  <div className="flex items-center space-x-4">
-                    <button
-                      onClick={decrement}
-                      className="w-8 h-8 flex justify-center items-center bg-gray-200 text-gray-600 font-bold rounded hover:bg-gray-300 focus:outline-none"
-                    >
-                      -
-                    </button>
-                    <span className="text-lg font-medium">{quantity}</span>
-                    <button
-                      onClick={increment}
-                      className="w-8 h-8 flex justify-center items-center bg-gray-200 text-gray-600 font-bold rounded hover:bg-gray-300 focus:outline-none"
-                    >
-                      +
-                    </button>
-                  </div>
-
-                  <div className="mt-4">
-                    <button
-                      onClick={() => {}}
-                      className="px-4 py-2 flex items-center gap-2 bg-[#e3e3e3] text-black hover:text-white rounded hover:bg-[#d50e3c] focus:outline-none"
-                    >
-                      <LuEye />
-                      Preview
-                    </button>
-                  </div>
-                </div>
-
-                <b className="text-[#d50e3c] pt-6">
-                  Price - ₦{parseFloat(details.price) * quantity}
-                </b>
-
-                <Alerts status={status} message={message} />
-                {details.itemCount >= 1 && (
-                  <button
-                    onClick={handleOrder}
-                    className={`px-4 py-2  ${
-                      wallet?.data.wallet < parseInt(details.price) * quantity
-                        ? 'bg-[#a3a3a3]'
-                        : 'bg-[#d50e3c]'
-                    } text-white rounded hover:bg-[#d50e3c] focus:outline-none`}
-                    disabled={
-                      wallet?.data.wallet < parseInt(details.price) * quantity
-                        ? true
-                        : false
-                    }
-                  >
-                    {wallet?.data.wallet < parseInt(details.price) * quantity
-                      ? 'Insufficient Balance, Fund your account'
-                      : isLoading
-                      ? 'Processing...order'
-                      : 'Order Now'}
                   </button>
-                )}
+                </div>
               </div>
-            )}
-          </Modal>
-        )}
+            </div>
+          );
+        })}
       </div>
+
+      {isModalOpen && <DeleteModal refetch={refetch} setModalOpen={() => setModalOpen(false)}  id={details?.id} /> }
     </div>
   );
 };

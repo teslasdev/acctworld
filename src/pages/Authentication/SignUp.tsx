@@ -8,6 +8,7 @@ interface SignUpFormValues {
   full_name: string;
   email: string;
   password: string;
+  role : string;
 }
 
 const SignUp: React.FC = () => {
@@ -18,6 +19,7 @@ const SignUp: React.FC = () => {
     full_name: '',
     email: '',
     password: '',
+    role : "User"
   };
 
   // Validation function

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const SelectGroupOne = ({ options , label , name , handleInputChange }: any) => {
+const SelectGroupOne = ({ options , label , name , handleInputChange , value }: any) => {
   const [selectedOption, setSelectedOption] = useState<string>('');
   const [isOptionSelected, setIsOptionSelected] = useState<boolean>(false);
 
@@ -18,7 +18,7 @@ const SelectGroupOne = ({ options , label , name , handleInputChange }: any) => 
       <div className="relative z-20 bg-transparent dark:bg-form-input">
         <select
           name={name}
-          value={selectedOption}
+          value={value ?? selectedOption}
           required
           onChange={(e) => {
             setSelectedOption(e.target.value);

@@ -16,12 +16,12 @@ const DropdownUser = () => {
         to="#"
       >
         <span className="hidden text-right lg:block">
-          <span className="block text-sm font-medium text-black dark:text-white">
+          <span className="block text-sm capitalize font-medium text-black dark:text-white">
             {data?.user.full_name}
           </span>
         </span>
 
-        <span className="h-12 w-12 bg-boxdark text-white font-[700] flex justify-center items-center rounded-full">
+        <span className="h-12 w-12 uppercase bg-boxdark text-white font-[700] flex justify-center items-center rounded-full">
         {data?.user.full_name.charAt(0)}
         </span>
 

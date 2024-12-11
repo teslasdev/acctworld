@@ -41,12 +41,16 @@ const SignIn: React.FC = () => {
         setStatus('success');
         setMessage(data.message);
         Cookies.set('token', data.token, { expires: 7 });
-        
-        window.location.href = '/dashboard';
+        console.log(data.user);
+        if (data.user?.is_admin) {
+          window.location.href = '/admin';
+        } else {
+          window.location.href = '/dashboard';
+        }
       })
       .catch((err: any) => {
         setStatus('error');
-        setMessage(err.data.message);
+        setMessage(err ? err.data.message : "Server Error , Try Again");
       });
   };
 

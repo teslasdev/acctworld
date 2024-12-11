@@ -3,6 +3,7 @@ import { useTypeQuery } from '../../api/fetch';
 import { Type } from '../../types/package';
 
 import { useEditTypeMutation, useTypesMutation } from '../../api/postToken';
+import { baseUrl } from '../../api';
 
 const TypeTable = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -20,6 +21,8 @@ const TypeTable = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
+
+
 
   const handleAddType = async () => {
     if (!file) return;
@@ -43,20 +46,20 @@ const TypeTable = () => {
   };
 
   const handleEditType = async () => {
-    if (!file) return;
     if (inputValue.trim() === '') return;
     if (!editingItem) return;
     const formData = new FormData();
     formData.append('name', inputValue);
     formData.append('visibility', enabled.toString());
-    formData.append('file', file);
+    if (file) {
+      formData.append('file', file);
+    }
     await edittypes({ id: editingItem?.id, data: formData })
       .unwrap()
       .then((data) => {
         refetch();
         console.log(data);
         setEditingItem(null);
-        
       })
       .catch((err) => {
         console.log(err);
@@ -73,6 +76,7 @@ const TypeTable = () => {
     const itemToEdit = type.find((item: any) => item.id === id);
     setEditingItem(itemToEdit);
     setInputValue(itemToEdit.name);
+    setPreview(`${baseUrl}` + itemToEdit.imageUrl)
   };
 
   useEffect(() => {
@@ -132,9 +136,7 @@ const TypeTable = () => {
                       <div className="flex items-center gap-4">
                         <div className="w-[40px] h-[40px] bg-gray-400 rounded-[8px]">
                           <img
-                            src={
-                              `https://acctworld-server.onrender.com` + packageItem?.imageUrl
-                            }
+                            src={`${baseUrl}` + packageItem?.imageUrl}
                             alt=""
                             className="w-full object-cover h-full"
                           />
@@ -203,7 +205,6 @@ const TypeTable = () => {
                 onClick={() => {
                   setEditingItem(null);
                   setInputValue('');
-                  
                 }}
                 className={`flex px-4 justify-center rounded p-3 bg-[#d50e3c] font-medium text-white`}
               >
@@ -273,7 +274,7 @@ const TypeTable = () => {
                 onChange={handleFileChange}
                 className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:py-3 file:px-5 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
               />
-              {preview && (
+              {preview  && (
                 <div className="mt-4">
                   <p className="text-sm mb-2 text-gray-500">Preview:</p>
                   <img

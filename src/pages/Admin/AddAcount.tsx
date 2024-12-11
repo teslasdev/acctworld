@@ -1,104 +1,68 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Accordion from '../UiElements/Accordion';
 
-interface Field {
-  name: string;
-  value: string;
+interface KeyValueObject {
+  [key: string]: string;
 }
 
-const DynamicAccordionForm: React.FC = () => {
-  const [accounts, setAccounts] = useState<string[]>(['Account 1']);
-  const [fields, setFields] = useState([
-    { email: 'Teslasdeveloper@gmail.com', password: 'aD@vin33' },
-    { email: 'Teslasdeveloper@gmail.com', password: 'aD@vin33' },
-  ]);
+const DynamicAccordionForm = ({ textInput, setFields }: any) => {
+  const [textOutput, setTextOutput] = useState('');
 
-  const handleAddAccount = () => {
-    const newAccountIndex = accounts.length + 1;
-    setAccounts([...accounts, `Account ${newAccountIndex}`]);
-  };
-  const handleAddField = () => {};
-  const handleInputChange = (index : number, key : string, value : any) => {
-    setFields((prev) =>
-      prev.map((field, i) =>
-        i === index ? { ...field, [key]: value } : field
+  useEffect(() => {
+    const accountFormats = textInput.map((field: any) => field.accountFormat);
+    const text = handleConvertToText(accountFormats);
+    setTextOutput(text);
+  }, [textInput]);
+
+  const handleConvertToText = (converted: KeyValueObject[]): string => {
+    return converted
+      .map((obj) =>
+        Object.entries(obj)
+          .map(([key, value]) => `${key}: ${value}`)
+          .join('\n'),
       )
-    );
-  };
-
-  const handleKeyChange = (index: number, newKey: string, value: any) => {
-    setFields((prev: any) =>
-      prev.map((field: any, i: number) => {
-        if (i === index) {
-          // Replace the entire object with a new one containing the updated key-value pair
-          return { ...field, [newKey]: value };
-        }
-        return field;
-      })
-    );
-  };
-
-  const addField = () => {
-    setFields((prev) => [...prev, { email: '', password: '' }]);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Accounts Data:', accounts);
+      .join('\n\n');
   };
 
   return (
-    <div className="rounded-sm border h-fit w-[40%] border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+    <div className="rounded-sm border h-fit w-full border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
       <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
         <h3 className="font-medium text-black dark:text-white">Accounts</h3>
       </div>
-      <form onSubmit={handleSubmit} className="p-6.5 space-y-6">
-        {fields.map((field: any, index) => (
-          <Accordion key={index} title={`Account ${index + 1}`}>
-            <div className="grid gap-4">
-              {Object.keys(field).map((key) => (
-                <div key={key} className="grid grid-cols-2 gap-2">
-                  <input
-                    type="text"
-                    placeholder="Name"
-                    value={key}
-                    onChange={(e) =>
-                        handleKeyChange(index, e.target.value, field[key])
-                      }
-                      
-                    className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Value"
-                    value={field[key]}
-                    onChange={(e) =>
-                        handleInputChange(index, key, e.target.value)
-                      }
-                    className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
-              ))}
+      <div className="p-6.5 space-y-6">
+        <div
+          className="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+          role="alert"
+        >
+          <div className="flex">
+            <div className="py-1">
+              <svg
+                className="fill-current h-6 w-6 text-teal-500 mr-4"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+              >
+                <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
+              </svg>
             </div>
-          </Accordion>
-        ))}
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={handleAddAccount}
-            className="flex px-4 justify-center rounded bg-green-500 p-2 font-medium text-white hover:bg-green-600"
-          >
-            Add Account
-          </button>
-          <button
-            type="button"
-            onClick={() => handleAddField()}
-            className="flex px-4 justify-center rounded bg-blue-500 p-2 font-medium text-white hover:bg-blue-600"
-          >
-            Add Field
-          </button>
+            <div>
+              <p className="font-bold">Take Note</p>
+              <p className="text-sm">
+                1. Make sure you save every account input
+              </p>
+              <p className="text-sm">2. Follow the instruction of the input</p>
+              <p className="text-sm">
+                3. The input must be the same on each accounts.
+              </p>
+              <p className="text-sm mt-2">
+                Please note!! As many accounts you added as number of piece of
+                the social media
+              </p>
+            </div>
+          </div>
         </div>
-      </form>
+
+        <Accordion fields={textOutput} setFields={setFields} />
+      </div>
     </div>
   );
 };

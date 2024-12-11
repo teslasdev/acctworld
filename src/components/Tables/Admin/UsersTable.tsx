@@ -88,8 +88,8 @@ const UsersTable = () => {
                       className={`inline-flex rounded-full capitalize bg-opacity-10 py-1 px-3 text-sm font-medium ${
                         packageItem.role === 'User'
                           ? 'bg-success text-success'
-                          : packageItem.status === 'SuperAdmin'
-                          ? 'bg-danger text-danger'
+                          : packageItem.role === 'Super Admin'
+                          ? 'bg-primary text-primary'
                           : 'bg-warning text-warning'
                       }`}
                     >

@@ -9,7 +9,7 @@ export function generatePaymentReference(length = 20) {
   return reference;
 }
 
-export const openSmallTab = (link : string , refetch : () => void) => {
+export const openSmallTab = (link : string , refetch: () => void) => {
   const url = link;
   const width = 400;
   const height = 500;

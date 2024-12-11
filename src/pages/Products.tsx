@@ -8,15 +8,20 @@ const Products = () => {
     <>
       <Breadcrumb pageName="Products" />
       {type &&
-        type.data?.filter((item: any) => item.visibility)
+        type.data
+          ?.filter((item: any) => item.visibility)
           .map((item: any, index: number) => {
             return (
-              <div className="flex flex-col gap-2 my-6" key={index}>
-                <h2 className="font-semibold text-black dark:text-white">
-                  {item.name}
-                </h2>
-                <ProductsTable typeId={item.id} />
-              </div>
+              <>
+                {item.visibility && (
+                  <div className="flex flex-col gap-2 my-6" key={index}>
+                    <h2 className="font-semibold text-black dark:text-white">
+                      {item.name}
+                    </h2>
+                    <ProductsTable typeId={item.id} />
+                  </div>
+                )}
+              </>
             );
           })}
     </>

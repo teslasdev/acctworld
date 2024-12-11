@@ -28,8 +28,8 @@ const Layout = () => {
           <ul className="flex gap-6 font-[500] text-black">
             <Link to={'/'}>Home</Link>
 
-            <Link to={'/#about'}>About Us</Link>
-            <Link to={'/#service'}>Services</Link>
+            <Link to={'/about'}>About Us</Link>
+            <Link to={'/service'}>Services</Link>
 
             <Link to={'https://engainsmedia.com/'}>Boost Accounts</Link>
           </ul>
@@ -60,8 +60,8 @@ const Layout = () => {
             <ul className="flex flex-col gap-6 font-[500] text-black">
               <Link to={'/'}>Home</Link>
 
-              <Link to={'/#about'}>About Us</Link>
-              <Link to={'/#service'}>Services</Link>
+              <Link to={'/about'}>About Us</Link>
+              <Link to={'/service'}>Services</Link>
 
               <Link to={'https://engainsmedia.com/'}>Boost Accounts</Link>
             </ul>
@@ -119,7 +119,7 @@ const Layout = () => {
               </ul>
             </div>
             <div>
-              <h3 className="font-[700] mb-5">Lega</h3>
+              <h3 className="font-[700] mb-5">Legal</h3>
 
               <ul className="space-y-4">
                 <li

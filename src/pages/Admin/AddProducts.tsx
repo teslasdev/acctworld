@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useCategoryQuery, useTypeQuery } from '../../api/fetch';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 
@@ -18,6 +18,7 @@ const AddProducts = () => {
 
   const [status, setStatus] = useState('');
   const [message, setMessage] = useState('');
+  const [fields, setFields] = useState([]);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -26,28 +27,37 @@ const AddProducts = () => {
     price: '',
     description: '',
     previewLink: '',
+    accountFormat: fields,
   });
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = event.target.files?.[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-      // Generate file preview
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (reader.result) {
-          setPreview(reader.result.toString());
-        }
-      };
-      reader.readAsDataURL(selectedFile);
-    }
-  };
+
+  useEffect(() => {
+    setFormData({ ...formData, accountFormat: fields });
+  }, [fields]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [message]);
+  // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const selectedFile = event.target.files?.[0];
+  //   if (selectedFile) {
+  //     setFile(selectedFile);
+  //     // Generate file preview
+  //     const reader = new FileReader();
+  //     reader.onload = () => {
+  //       if (reader.result) {
+  //         setPreview(reader.result.toString());
+  //       }
+  //     };
+  //     reader.readAsDataURL(selectedFile);
+  //   }
+  // };
 
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const [products , {isLoading}] = useProductsMutation();
+  const [products, { isLoading }] = useProductsMutation();
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -61,6 +71,7 @@ const AddProducts = () => {
     data.append('price', formData.price);
     data.append('description', formData.description);
     data.append('previewLink', formData.previewLink);
+    data.append('accountFormat', fields.toString());
     if (file) {
       data.append('file', file);
     }
@@ -69,13 +80,13 @@ const AddProducts = () => {
       .unwrap()
       .then((data) => {
         console.log(data);
-        setMessage("Product Uploaded Successfully")
-        setStatus('success')
+        setMessage('Product Uploaded Successfully');
+        setStatus('success');
       })
       .catch((err) => {
         console.log(err);
-        setStatus('error')
-        setMessage(err.message)
+        setStatus('error');
+        setMessage(err.data.message);
       });
   };
 
@@ -85,22 +96,24 @@ const AddProducts = () => {
       setStatus('');
     }
   }, 5000);
+
+  console.log(fields)
   return (
     <>
       <Breadcrumb pageName="Products" />
-      <div className="flex md:flex-row flex-col gap-9 justify-center">
-        {/* <!-- Contact Form --> */}
-        <div className="rounded-sm border md:w-1/2 border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-          <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
-            <h3 className="font-medium text-black dark:text-white">
-              Add Products
-            </h3>
-          </div>
-          <form onSubmit={handleSubmit}>
-            
+      <form onSubmit={handleSubmit}>
+        <div className="flex md:flex-row flex-col gap-9 justify-center">
+          {/* <!-- Contact Form --> */}
+          <div className="rounded-sm border md:w-1/2 border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
+              <h3 className="font-medium text-black dark:text-white">
+                Add Products
+              </h3>
+            </div>
+
             <div className="p-6.5">
-            <Alerts status={status} message={message} />
-              <div className="mb-4.5">
+              
+              <div className="mb-4.5 mt-4">
                 <label className="mb-2.5 block text-black dark:text-white">
                   Name <span className="text-meta-1">*</span>
                 </label>
@@ -129,7 +142,7 @@ const AddProducts = () => {
                 label={'Type'}
               />
 
-              <div className="pb-6">
+              {/* <div className="pb-6">
                 <label className="mb-3 block text-black dark:text-white">
                   Attach file(if no file uploaded it picks the type image by
                   default)
@@ -149,7 +162,7 @@ const AddProducts = () => {
                     />
                   </div>
                 )}
-              </div>
+              </div> */}
 
               <div className="mb-4.5">
                 <label className="mb-2.5 block text-black dark:text-white">
@@ -195,19 +208,23 @@ const AddProducts = () => {
                   className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
               </div>
-
-              <button
-                type="submit"
-                className="flex w-full justify-center rounded bg-[#d50e3c] p-3 font-medium text-gray hover:bg-opacity-90"
-              >
-                {isLoading ? "Processing..." : "Add Product"}
-              </button>
             </div>
-          </form>
-        </div>
+          </div>
 
-        <DynamicAccordionForm />
-      </div>
+          <div className='md:w-[40%] w-full'>
+            <DynamicAccordionForm textInput={[]} setFields={setFields} />
+            <div className='py-4'>
+            <Alerts status={status} message={message} />
+            </div>
+            <button
+              type="submit"
+              className="flex px-6 mt-3 justify-center rounded bg-[#d50e3c] p-3 font-medium text-gray hover:bg-opacity-90"
+            >
+              {isLoading ? 'Processing...' : 'Add Product'}
+            </button>
+          </div>
+        </div>
+      </form>
     </>
   );
 };

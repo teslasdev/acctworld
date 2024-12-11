@@ -9,22 +9,41 @@ const TransactionsTable = ({ refresh }: any) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
+  const [filters, setFilters] = useState({
+    status: '',
+    amount: '',
+    reference: '',
+  });
+
+  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFilters((prev) => ({ ...prev, [name]: value }));
+    setCurrentPage(1); // Reset to the first page when filters change
+  };
+
+  const filteredData = packageData.filter((item: any) => {
+    const matchesStatus =
+      filters.status === '' || item.status.toLowerCase() === filters.status.toLowerCase();
+    const matchesAmount =
+      filters.amount === '' || item.amount.toString().includes(filters.amount);
+    const matchesReference =
+      filters.reference === '' ||
+      item.paymentReference.toLowerCase().includes(filters.reference.toLowerCase());
+    return matchesStatus && matchesAmount && matchesReference;
+  });
+
   const lastIndex = currentPage * itemsPerPage;
-
   const firstIndex = lastIndex - itemsPerPage;
+  const currentPageData = filteredData.slice(firstIndex, lastIndex);
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
-  const currentPageData = packageData.slice(firstIndex, lastIndex);
-
-  const totalPages = Math.ceil(packageData.length / itemsPerPage);
-
-  // Handle page change
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
 
   const [txn, setTxn] = useState('');
-
   const [verification, { isLoading }] = useVerificationMutation();
+
   const handleVerify = async (txnref: string) => {
     setTxn(txnref);
     await verification({ txnref })
@@ -40,12 +59,10 @@ const TransactionsTable = ({ refresh }: any) => {
         refetch();
       });
   };
+
   return (
     <>
-      <div
-        className="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
-        role="alert"
-      >
+      <div className="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md">
         <div className="flex">
           <div className="py-1">
             <svg
@@ -64,6 +81,38 @@ const TransactionsTable = ({ refresh }: any) => {
           </div>
         </div>
       </div>
+
+      {/* Filter Section */}
+      <div className="mb-4 flex gap-4">
+        <select
+          name="status"
+          value={filters.status}
+          onChange={handleFilterChange}
+          className="p-2 border rounded outline-none"
+        >
+          <option value="">All Status</option>
+          <option value="success">Success</option>
+          <option value="failed">Failed</option>
+          <option value="pending">Pending</option>
+        </select>
+        <input
+          type="text"
+          name="amount"
+          value={filters.amount}
+          onChange={handleFilterChange}
+          placeholder="Filter by Amount"
+          className="p-2 border rounded outline-none"
+        />
+        <input
+          type="text"
+          name="reference"
+          value={filters.reference}
+          onChange={handleFilterChange}
+          placeholder="Filter by Reference"
+          className="p-2 border rounded outline-none"
+        />
+      </div>
+
       <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
         <div className="max-w-full overflow-x-auto">
           <table className="w-full table-auto">
@@ -81,78 +130,76 @@ const TransactionsTable = ({ refresh }: any) => {
                 <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
                   Status
                 </th>
-                <th className="py-4 px-4 font-medium text-black dark:text-white">
-                  Actions
-                </th>
+                <th className="py-4 px-4 font-medium text-black dark:text-white">Actions</th>
               </tr>
             </thead>
             <tbody>
               {currentPageData.map((packageItem: any, key: number) => (
                 <tr key={key}>
-                  <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                    <h5 className="font-medium text-black dark:text-white">
-                      {packageItem.paymentReference}
-                    </h5>
-                  </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-sm">
-                      NGN {packageItem.amount.toLocaleString()}
-                    </p>
-                  </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white">
-                      {new Date(packageItem?.createdAt).toLocaleString(
-                        'en-US',
-                        {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric',
-                          hour: '2-digit',
-                          minute: '2-digit',
-                          second: '2-digit',
-                        },
-                      )}
-                    </p>
-                  </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p
-                      className={`inline-flex rounded-full capitalize bg-opacity-10 py-1 px-3 text-sm font-medium ${
-                        packageItem.status === 'success'
-                          ? 'bg-success text-success'
-                          : packageItem.status === 'failed'
-                          ? 'bg-danger text-danger'
-                          : 'bg-warning text-warning'
+                <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                  <h5 className="font-medium text-black dark:text-white">
+                    {packageItem.paymentReference}
+                  </h5>
+                </td>
+                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  <p className="text-sm">
+                    NGN {packageItem.amount.toLocaleString()}
+                  </p>
+                </td>
+                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  <p className="text-black dark:text-white">
+                    {new Date(packageItem?.createdAt).toLocaleString(
+                      'en-NG',
+                      {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                       
+                      },
+                    )}
+                  </p>
+                </td>
+                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  <p
+                    className={`inline-flex rounded-full capitalize bg-opacity-10 py-1 px-3 text-sm font-medium ${
+                      packageItem.status === 'success'
+                        ? 'bg-success text-success'
+                        : packageItem.status === 'failed'
+                        ? 'bg-danger text-danger'
+                        : 'bg-warning text-warning'
+                    }`}
+                  >
+                    {packageItem.status}
+                  </p>
+                </td>
+                <td className="border-b relative border-[#eee] py-5 px-4 dark:border-strokedark">
+                  <div className="flex items-center space-x-3.5">
+                    <button
+                      onClick={() => handleVerify(packageItem.txnReference)}
+                      type="button"
+                      className={`text-[12px] px-4 py-1 bg-green-600 text-white rounded-md btn btn-success ${
+                        packageItem.status == 'success' && 'opacity-20'
                       }`}
+                      disabled={packageItem.status == 'success'}
                     >
-                      {packageItem.status}
-                    </p>
-                  </td>
-                  <td className="border-b relative border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <div className="flex items-center space-x-3.5">
-                      <button
-                        onClick={() => handleVerify(packageItem.txnReference)}
-                        type="button"
-                        className={`text-[12px] px-4 py-1 bg-green-600 text-white rounded-md btn btn-success ${
-                          packageItem.status == 'success' && 'opacity-20'
-                        }`}
-                        disabled={packageItem.status == 'success'}
-                      >
-                        Verify Status
-                      </button>
-                      {isLoading && txn == packageItem.txnReference && (
-                        <div className="absolute right-10 flex justify-center items-center">
-                          <div className="w-[15px] h-[15px] border-2 border-gray-500 border-t-transparent rounded-full animate-spin"></div>
-                        </div>
-                      )}
-                    </div>
-                  </td>
-                </tr>
+                      Verify Status
+                    </button>
+                    {isLoading && txn == packageItem.txnReference && (
+                      <div className="absolute right-10 flex justify-center items-center">
+                        <div className="w-[15px] h-[15px] border-2 border-gray-500 border-t-transparent rounded-full animate-spin"></div>
+                      </div>
+                    )}
+                  </div>
+                </td>
+              </tr>
               ))}
             </tbody>
           </table>
-          {data?.data.length <= 0 && (
+          {filteredData.length === 0 && (
             <div className="flex flex-col py-12 justify-center items-center">
-              <div className="md:w-[350px] w-[150px]">
+               <div className="md:w-[350px] w-[150px]">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 985 910"
@@ -690,6 +737,8 @@ const TransactionsTable = ({ refresh }: any) => {
           )}
         </div>
       </div>
+
+      {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex justify-end">
           <button
@@ -714,3 +763,4 @@ const TransactionsTable = ({ refresh }: any) => {
 };
 
 export default TransactionsTable;
+

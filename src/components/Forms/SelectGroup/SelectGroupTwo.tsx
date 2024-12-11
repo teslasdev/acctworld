@@ -16,8 +16,8 @@ const SelectGroupTwo: React.FC<FilterContextType> = ({ setFilter }) => {
   const { data } = useCategoryQuery();
   return (
     <div>
-      <div className="relative z-20 bg-white dark:bg-form-input">
-        <span className="absolute top-1/2 left-4 z-30 -translate-y-1/2">
+      <div className="relative bg-white dark:bg-form-input">
+        <span className="absolute top-1/2 left-4 -translate-y-1/2">
           <svg
             width="20"
             height="20"
@@ -53,9 +53,9 @@ const SelectGroupTwo: React.FC<FilterContextType> = ({ setFilter }) => {
           onChange={(e) => {
             setSelectedOption(e.target.value);
             changeTextColor();
-            setFilter(e.target.value)
+            setFilter(e.target.value);
           }}
-          className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-12 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input ${
+          className={`relative  w-full appearance-none rounded border border-stroke bg-transparent py-3 px-12 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input ${
             isOptionSelected ? 'text-black dark:text-white' : ''
           }`}
         >
@@ -64,14 +64,17 @@ const SelectGroupTwo: React.FC<FilterContextType> = ({ setFilter }) => {
           </option>
           {data?.categories.map((item: any, index: number) => {
             return (
-              <option
-                value={item.id}
-                key={index}
-                className="text-body dark:text-bodydark"
-                
-              >
-                {item.name}
-              </option>
+              <>
+                {item.visibility && (
+                  <option
+                    value={item.id}
+                    key={index}
+                    className="text-body dark:text-bodydark"
+                  >
+                    {item.name}
+                  </option>
+                )}
+              </>
             );
           })}
         </select>

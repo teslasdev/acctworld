@@ -1,10 +1,5 @@
 import { useEffect } from 'react';
-import {
-  Navigate,
-  Route,
-  Routes,
-  useLocation,
-} from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
 import SignIn from './pages/Authentication/SignIn';
@@ -30,6 +25,10 @@ import AddType from './pages/Admin/AddType';
 import PrivacyPolicy from './pages/Privacy';
 import TermsAndConditions from './pages/Terms';
 import FaqSection from './pages/FAQs';
+import About from './pages/About';
+import Service from './pages/Service';
+import EditProducts from './pages/Admin/EditProducts';
+import AddFunds from './pages/AddFunds';
 
 interface ProtectedRouteProps {
   isAuthenticated: boolean;
@@ -91,6 +90,26 @@ function App() {
         />
 
         <Route
+          path="about"
+          element={
+            <>
+              <PageTitle title="About Us" />
+              <About />
+            </>
+          }
+        />
+
+        <Route
+          path="service"
+          element={
+            <>
+              <PageTitle title="Service" />
+              <Service />
+            </>
+          }
+        />
+
+        <Route
           path="faqs"
           element={
             <>
@@ -145,6 +164,16 @@ function App() {
             <>
               <PageTitle title="Products" />
               <Products />
+            </>
+          }
+        />
+
+        <Route
+          path="add-funds"
+          element={
+            <>
+              <PageTitle title="Funds" />
+              <AddFunds />
             </>
           }
         />
@@ -248,6 +277,16 @@ function App() {
             <>
               <PageTitle title="Product" />
               <AddProducts />
+            </>
+          }
+        />
+
+        <Route
+          path="products/edit-product/:id"
+          element={
+            <>
+              <PageTitle title="Edit Product" />
+              <EditProducts />
             </>
           }
         />

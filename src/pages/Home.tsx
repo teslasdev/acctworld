@@ -221,7 +221,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div className="slider-container py-6 mx-auto max-w-[1440px]">
+      <div className="slider-container py-6 px-6 mx-auto max-w-[1440px]">
         <Swiper
           modules={[Navigation, Pagination, A11y, Autoplay]}
           spaceBetween={50}
@@ -238,7 +238,7 @@ const Home = () => {
             <img
               src={banner1}
               alt="Slide 1"
-              className="w-full h-[200px] md:h-[500px]"
+              className="w-full h-[150px] md:h-[500px]"
               onClick={() => window.location.href="/auth/sigin"}
             />
           </SwiperSlide>
@@ -246,7 +246,7 @@ const Home = () => {
             <img
               src={banner2}
               alt="Slide 2"
-              className="w-full h-[200px] md:h-[500px]"
+              className="w-full h-[150px] md:h-[500px]"
               onClick={() => window.location.href="https://ig.me/m/acctworld_"}
             />
           </SwiperSlide>
@@ -254,7 +254,7 @@ const Home = () => {
             <img
               src={banner3}
               alt="Slide 2"
-              className="w-full h-[200px] md:h-[500px]"
+              className="w-full h-[150px] md:h-[500px]"
               onClick={() => window.location.href="https://t.me/@acctworld_"}
             />
           </SwiperSlide>
@@ -262,7 +262,7 @@ const Home = () => {
             <img
               src={banner4}
               alt="Slide 2"
-              className="w-full h-[200px] md:h-[500px]"
+              className="w-full h-[150px] md:h-[500px]"
               onClick={() => window.location.href="https://engainsmedia.com/"}
             />
           </SwiperSlide>
@@ -396,8 +396,8 @@ const Home = () => {
                 of new followers. It’s like having a dedicated marketing team
                 working 24/7 to boost my online presence. Highly recommended!
               </p>
-              <h3 className="text-[20px]  font-[700] text-[#000000]">
-                Sarah T.
+              <h3 className="text-[20px] mt-6  font-[700] text-[#000000]">
+                Omolola T.
               </h3>
             </div>
 
@@ -492,8 +492,8 @@ const Home = () => {
                 confident releasing new music because I know the audience is
                 there. Thank you for helping me grow!
               </p>
-              <h3 className="text-[20px]  font-[700] text-[#000000]">
-                Jason R., Independent Musician
+              <h3 className="text-[20px] mt-6 font-[700] text-[#000000]">
+                Adekunle R., Independent Musician
               </h3>
             </div>
             <div className="flex flex-col justify-center items-center gap-2">
@@ -587,8 +587,8 @@ const Home = () => {
                 It’s the perfect tool for anyone looking to take their social
                 media game to the next level!
               </p>
-              <h3 className="text-[20px]  font-[700] text-[#000000]">
-                Amanda C., Lifestyle Blogger
+              <h3 className="text-[20px] mt-6  font-[700] text-[#000000]">
+                Ogunatayo C., Lifestyle Blogger
               </h3>
             </div>
           </div>

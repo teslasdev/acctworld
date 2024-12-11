@@ -1,8 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { baseUrl } from '.';
 
 const ApiPost = createApi({
   reducerPath: 'api',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://acctworld-server.onrender.com' }),
+  baseQuery: fetchBaseQuery({ baseUrl: `${baseUrl}` }),
   endpoints: (builder) => ({
     signIn: builder.mutation({
       query: (data) => ({
