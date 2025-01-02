@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useGetUsersQuery } from '../../../api/fetch';
+import { LuFileSearch2 } from 'react-icons/lu';
 
 const UsersTable = () => {
   const { data } = useGetUsersQuery();
@@ -8,23 +9,76 @@ const UsersTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
+  const [filters, setFilters] = useState({
+    status: '',
+    search: '',
+    reference: '',
+  });
+
+  const handleFilterChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    const { name, value } = e.target;
+    setFilters((prev) => ({ ...prev, [name]: value }));
+    setCurrentPage(1); // Reset to the first page when filters change
+  };
+
+  const filteredData = packageData.filter((item: any) => {
+    const matchesStatus =
+      filters.status === '' ||
+      item.role.toLowerCase() === filters.status.toLowerCase();
+    const matchesSearch =
+      filters.search === '' ||
+      item.email.toString().includes(filters.search) ||
+      item.full_name.toString().includes(filters.search);
+    const matchesReference =
+      filters.reference === '' ||
+      item.paymentReference
+        .toLowerCase()
+        .includes(filters.reference.toLowerCase());
+    return matchesStatus && matchesSearch && matchesReference;
+  });
+
   const lastIndex = currentPage * itemsPerPage;
-
   const firstIndex = lastIndex - itemsPerPage;
+  const currentPageData = filteredData.slice(firstIndex, lastIndex);
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
-  const currentPageData = packageData.slice(firstIndex, lastIndex);
-
-  const totalPages = Math.ceil(packageData.length / itemsPerPage);
-
-  // Handle page change
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
 
-  const [txn, setTxn] = useState('');
-
   return (
     <>
+      <div className="mb-4 flex flex-wrap gap-4">
+        <select
+          name="status"
+          value={filters.status}
+          onChange={handleFilterChange}
+          className="p-2 border rounded outline-none"
+        >
+          <option value="">All Status</option>
+          <option value="super admin">Super Admin</option>
+          <option value="user">User</option>
+          <option value="admin">Admin</option>
+        </select>
+        <input
+          type="text"
+          name="search"
+          value={filters.search}
+          onChange={handleFilterChange}
+          placeholder="Search By Email / Name"
+          className="p-2 border rounded outline-none"
+        />
+        {/* <input
+          type="text"
+          name="reference"
+          value={filters.reference}
+          onChange={handleFilterChange}
+          placeholder="Filter by Reference"
+          className="p-2 border rounded outline-none"
+        /> */}
+      </div>
       <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
         <div className="max-w-full overflow-x-auto">
           <table className="w-full table-auto">
@@ -32,6 +86,14 @@ const UsersTable = () => {
               <tr className="bg-gray-2 text-left dark:bg-meta-4">
                 <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
                   Name
+                </th>
+
+                <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
+                  Wallet Balance
+                </th>
+
+                <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
+                  Total Spent
                 </th>
 
                 <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
@@ -47,7 +109,7 @@ const UsersTable = () => {
                 <tr key={key}>
                   <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                     <div className="flex items-center gap-4">
-                      <div className="w-[40px] h-[40px] text-white flex justify-center items-center text-[20px] font-[700] bg-gray-400 rounded-[8px]">
+                      <div className="w-[40px] uppercase h-[40px] text-white flex justify-center items-center text-[20px] font-[700] bg-gray-400 rounded-[8px]">
                         {packageItem.full_name.charAt(0)}
                       </div>
                       <div>
@@ -62,23 +124,31 @@ const UsersTable = () => {
                     <h5 className="font-medium text-black dark:text-white">
                       {packageItem.paymentReference}
                     </h5>
-                  </td>
+                  </td>*/}
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-sm">
-                      NGN {packageItem.amount.toLocaleString()}
+                    <p className="text-sm text-[#d50e3c] font-[600]">
+                      NGN {packageItem.wallet.balance.toLocaleString()}
                     </p>
-                  </td> */}
+                  </td>
+
+                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                    <p className="text-sm text-[#d50e3c] font-[600]">
+                      NGN{' '}
+                      {packageItem.totalOrderPrice
+                        ? packageItem.totalOrderPrice.toLocaleString()
+                        : 0}
+                    </p>
+                  </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white">
                       {new Date(packageItem?.createdAt).toLocaleString(
                         'en-US',
                         {
                           year: 'numeric',
-                          month: 'long',
+                          month: 'short',
                           day: 'numeric',
                           hour: '2-digit',
                           minute: '2-digit',
-                          second: '2-digit',
                         },
                       )}
                     </p>

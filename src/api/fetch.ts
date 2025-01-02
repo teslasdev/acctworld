@@ -93,6 +93,12 @@ const ApiGet = createApi({
         method: 'GET',
       }),
     }),
+    getTypesById: builder.query<any, {id : any}>({
+      query: (id) => ({
+        url: `/api/type/${id}`,
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
@@ -108,6 +114,7 @@ export const {
   useGetAalysticsQuery,
   useGetUsersQuery,
   useGetOrdersQuery,
-  useGetProductByIdQuery
+  useGetProductByIdQuery,
+  useGetTypesByIdQuery
 } = ApiGet;
 export default ApiGet;

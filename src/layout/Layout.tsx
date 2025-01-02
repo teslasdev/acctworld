@@ -4,6 +4,7 @@ import bar from '../images/logo/bar.svg';
 import Facebook from '../images/logo/facebook.svg';
 import Insta from '../images/logo/instagram.svg';
 import Twitter from '../images/logo/twitter.svg';
+import Telegram from '../images/logo/telegram.svg';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 
 const Layout = () => {
@@ -200,23 +201,28 @@ const Layout = () => {
               2024 AcctWorld. All Rights Reserved
             </p>
 
-            <div className="flex gap-3">
+            <div className="flex">
               <Link
                 to={'https://www.tiktok.com/@acctworld?_t=8rrE3GGTVKB&_r=1'}
               >
-                <img src={Facebook} alt="" className="w-[67.95] h-[60px]" />
+                <img src={Facebook} alt="" className="w-[67.95px] h-[60px]" />
               </Link>
               <Link
                 to={
                   'https://www.instagram.com/acctworld_?igsh=NHptYzJ5NTNseng3'
                 }
               >
-                <img src={Insta} alt="" className="w-[67.95] h-[60px]" />
+                <img src={Insta} alt="" className="w-[67.95px] h-[60px]" />
               </Link>
               <Link
                 to={'https://x.com/acctworld_?s=21&t=g2DQ09yQelHh8ewUH8bo0w'}
               >
-                <img src={Twitter} alt="" className="w-[67.95] h-[60px]" />
+                <img src={Twitter} alt="" className="w-[67.95px] h-[60px]" />
+              </Link>
+              <Link
+                to={'https://t.me/acctworld'}
+              >
+                <img src={Telegram} alt="" className="w-[67.95px] h-[60px]" />
               </Link>
             </div>
           </div>

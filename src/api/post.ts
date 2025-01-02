@@ -13,6 +13,22 @@ const ApiPost = createApi({
       }),
     }),
 
+    forGot: builder.mutation({
+      query: (data) => ({
+        url: '/auth/password-reset',
+        method: 'POST',
+        body: data,
+      }),
+    }),
+
+    reset: builder.mutation({
+      query: (data) => ({
+        url: '/auth/reset-password',
+        method: 'POST',
+        body: data,
+      }),
+    }),
+
     signUp: builder.mutation({
       query: (data) => ({
         url: '/auth/signup',
@@ -27,8 +43,10 @@ const ApiPost = createApi({
         body: data,
       }),
     }),
+
+    
   }),
 });
 
-export const { useSignInMutation, useSignUpMutation , usePayementMutation } = ApiPost;
+export const { useSignInMutation, useSignUpMutation , usePayementMutation , useForGotMutation , useResetMutation  } = ApiPost;
 export default ApiPost;

@@ -44,9 +44,9 @@ const TransactionsTable = ({ refresh }: any) => {
   const [txn, setTxn] = useState('');
   const [verification, { isLoading }] = useVerificationMutation();
 
-  const handleVerify = async (txnref: string) => {
+  const handleVerify = async (txnref: string , method : string) => {
     setTxn(txnref);
-    await verification({ txnref })
+    await verification({ txnref , method })
       .unwrap()
       .then((data: any) => {
         if (data.success) {
@@ -83,7 +83,7 @@ const TransactionsTable = ({ refresh }: any) => {
       </div>
 
       {/* Filter Section */}
-      <div className="mb-4 flex gap-4">
+      <div className="mb-4 flex flex-wrap gap-4">
         <select
           name="status"
           value={filters.status}
@@ -177,7 +177,7 @@ const TransactionsTable = ({ refresh }: any) => {
                 <td className="border-b relative border-[#eee] py-5 px-4 dark:border-strokedark">
                   <div className="flex items-center space-x-3.5">
                     <button
-                      onClick={() => handleVerify(packageItem.txnReference)}
+                      onClick={() => handleVerify(packageItem.txnReference , packageItem.paymentMethod)}
                       type="button"
                       className={`text-[12px] px-4 py-1 bg-green-600 text-white rounded-md btn btn-success ${
                         packageItem.status == 'success' && 'opacity-20'

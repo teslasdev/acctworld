@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useOrdersQuery } from '../../api/fetch';
-import { baseUrl } from '../../api';
+import { jsPDF } from 'jspdf';
 
 const OrdersTable = () => {
-  const { data } = useOrdersQuery();
+  const { data : order } = useOrdersQuery();
 
-  const packageData = data?.data || [];
+  const packageData = order?.data || [];
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
 
   const toggleRow = (key: number) => {
@@ -14,7 +14,50 @@ const OrdersTable = () => {
     );
   };
 
-  console.log(expandedRows);
+  
+  const generatePdf = async (data: any) => {
+    const doc = new jsPDF();
+
+    // Add Title
+    doc.setFontSize(16);
+    doc.text('Product Details', 10, 10);
+
+    // Add Basic Details
+    doc.setFontSize(12);
+    doc.text(`ID: ${data.id}`, 10, 20);
+    doc.text(`Name: ${data.name}`, 10, 30);
+    doc.text(`Quantity: ${data.qty}`, 10, 40);
+    doc.text(`Price: ${data.price}`, 10, 50);
+   
+    // Add Account Format Details
+    doc.text('Account Details:', 10, 80);
+    let yPosition = 90; // Start position for account details
+
+    data.accountFormat.forEach(
+      (
+        account: { Email: any; Password: any; Username: any },
+        index: number,
+      ) => {
+        doc.text(`Account ${index + 1}:`, 10, yPosition);
+        yPosition += 10; // Move to the next line
+        doc.text(`   Email: ${account.Email}`, 10, yPosition);
+        yPosition += 10;
+        doc.text(`   Password: ${account.Password}`, 10, yPosition);
+        yPosition += 10;
+        doc.text(`   Username: ${account.Username}`, 10, yPosition);
+        yPosition += 15; // Add spacing between accounts
+      },
+    );
+
+    // Add Image
+    const img = new Image();
+    img.src = data.imageUrl;
+    img.onload = () => {
+      doc.addImage(img, 'JPEG', 10, yPosition, 50, 50);
+      doc.save('product-details.pdf');
+    };
+  };
+
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="max-w-full overflow-x-auto">
@@ -46,7 +89,7 @@ const OrdersTable = () => {
                 >
                   <td className="border-b border-[#eee] py-5 px-4 md:pl-9 dark:border-strokedark xl:pl-11">
                     <div className="flex items-center gap-2">
-                      <div className="w-[40px] hidden md:flex h-[40px] bg-gray-400 rounded-[8px]">
+                      <div className="w-[40px] hidden md:flex h-[40px] bg-white rounded-[8px]">
                         <img
                           src={packageItem.imageUrl}
                           alt=""
@@ -85,20 +128,48 @@ const OrdersTable = () => {
                           day: 'numeric',
                           hour: '2-digit',
                           minute: '2-digit',
-                         
                         },
                       )}
                     </p>
                   </td>
-
-                
                 </tr>
                 {expandedRows.includes(key) && (
                   <tr className="">
                     <td
                       colSpan={4}
-                      className="border-b bg-gray-50 dark:bg-gray-900 border-[#eee] py-5 px-12 dark:border-strokedark"
+                      className="border-b relative bg-gray-50 dark:bg-gray-900 border-[#eee] py-5 px-4 md:px-12 dark:border-strokedark"
                     >
+                      <div onClick={() => generatePdf(packageData[key])} className="bg-black cursor-pointer text-[12px] text-white rounded-full px-6 py-2 flex items-center gap-2 w-fit font-semibold absolute top-4 right-5">
+                        <svg
+                          id="Uploaded to svgrepo.com"
+                          xmlns="http://www.w3.org/2000/svg"
+                          xmlnsXlink="http://www.w3.org/1999/xlink"
+                          width="20px"
+                          height="20px"
+                          viewBox="0 0 32 32"
+                          xmlSpace="preserve"
+                          className="fill-current"
+                        >
+                          <style type="text/css">
+                            {'\n\t.open_een{fill:#ffffff;}\n'}
+                          </style>
+                          <g>
+                            <g>
+                              <path
+                                className="open_een"
+                                d="M29.942,11.62c-0.296-2.25-1.827-4.211-3.994-5.119c-1.125-0.47-2.295-0.609-3.479-0.417 C21.05,3.556,18.414,2,15.5,2c-4.074,0-7.456,3.048-7.934,7.037C5.901,8.825,4.37,9.46,3.3,10.637 c-0.959,1.055-1.412,2.423-1.276,3.852C2.265,17.019,4.535,19,7.193,19H11.5c0.276,0,0.5-0.224,0.5-0.5S11.776,18,11.5,18H7.193 c-2.148,0-3.981-1.583-4.174-3.605C2.91,13.25,3.272,12.154,4.04,11.31C4.797,10.478,5.876,10,7,10 c0.281,0,0.578,0.037,0.905,0.113c0.146,0.035,0.297,0.002,0.414-0.088c0.119-0.089,0.191-0.226,0.198-0.374 C8.702,5.921,11.77,3,15.5,3c2.66,0,5.057,1.482,6.254,3.869c0.104,0.205,0.327,0.314,0.555,0.264 c1.111-0.245,2.206-0.148,3.253,0.291c1.841,0.77,3.14,2.428,3.389,4.326c0.212,1.613-0.254,3.167-1.314,4.375 C26.591,17.316,25.083,18,23.5,18h-5c-0.275,0-0.5-0.224-0.5-0.5V12c0-1.103-0.897-2-2-2s-2,0.897-2,2v11.667h-0.5 c-0.571,0-1.086,0.317-1.341,0.829c-0.256,0.512-0.202,1.114,0.141,1.571l2.5,3.333c0.286,0.381,0.724,0.6,1.2,0.6 s0.914-0.219,1.2-0.6l2.499-3.333c0.344-0.457,0.398-1.059,0.143-1.571c-0.255-0.512-0.77-0.83-1.342-0.83H18V21.5 c0-0.276-0.224-0.5-0.5-0.5S17,21.224,17,21.5v2.667c0,0.276,0.224,0.5,0.5,0.5h1c0.193,0,0.361,0.104,0.447,0.277 c0.087,0.173,0.069,0.368-0.048,0.523l-2.5,3.333c-0.189,0.254-0.609,0.254-0.799,0l-2.5-3.333 c-0.116-0.155-0.134-0.351-0.048-0.524c0.087-0.173,0.254-0.276,0.447-0.276h1c0.276,0,0.5-0.224,0.5-0.5V12c0-0.551,0.448-1,1-1 s1,0.449,1,1v5.5c0,0.827,0.673,1.5,1.5,1.5h5c1.871,0,3.653-0.808,4.888-2.215C29.622,15.377,30.188,13.495,29.942,11.62z"
+                              />
+                            </g>
+                            <g>
+                              <path
+                                className="open_een"
+                                d="M29.942,11.62c-0.296-2.25-1.827-4.211-3.994-5.119c-1.125-0.47-2.295-0.609-3.479-0.417 C21.05,3.556,18.414,2,15.5,2c-4.074,0-7.456,3.048-7.934,7.037C5.901,8.825,4.37,9.46,3.3,10.637 c-0.959,1.055-1.412,2.423-1.276,3.852C2.265,17.019,4.535,19,7.193,19H11.5c0.276,0,0.5-0.224,0.5-0.5S11.776,18,11.5,18H7.193 c-2.148,0-3.981-1.583-4.174-3.605C2.91,13.25,3.272,12.154,4.04,11.31C4.797,10.478,5.876,10,7,10 c0.281,0,0.578,0.037,0.905,0.113c0.146,0.035,0.297,0.002,0.414-0.088c0.119-0.089,0.191-0.226,0.198-0.374 C8.702,5.921,11.77,3,15.5,3c2.66,0,5.057,1.482,6.254,3.869c0.104,0.205,0.327,0.314,0.555,0.264 c1.111-0.245,2.206-0.148,3.253,0.291c1.841,0.77,3.14,2.428,3.389,4.326c0.212,1.613-0.254,3.167-1.314,4.375 C26.591,17.316,25.083,18,23.5,18h-5c-0.275,0-0.5-0.224-0.5-0.5V12c0-1.103-0.897-2-2-2s-2,0.897-2,2v11.667h-0.5 c-0.571,0-1.086,0.317-1.341,0.829c-0.256,0.512-0.202,1.114,0.141,1.571l2.5,3.333c0.286,0.381,0.724,0.6,1.2,0.6 s0.914-0.219,1.2-0.6l2.499-3.333c0.344-0.457,0.398-1.059,0.143-1.571c-0.255-0.512-0.77-0.83-1.342-0.83H18V21.5 c0-0.276-0.224-0.5-0.5-0.5S17,21.224,17,21.5v2.667c0,0.276,0.224,0.5,0.5,0.5h1c0.193,0,0.361,0.104,0.447,0.277 c0.087,0.173,0.069,0.368-0.048,0.523l-2.5,3.333c-0.189,0.254-0.609,0.254-0.799,0l-2.5-3.333 c-0.116-0.155-0.134-0.351-0.048-0.524c0.087-0.173,0.254-0.276,0.447-0.276h1c0.276,0,0.5-0.224,0.5-0.5V12c0-0.551,0.448-1,1-1 s1,0.449,1,1v5.5c0,0.827,0.673,1.5,1.5,1.5h5c1.871,0,3.653-0.808,4.888-2.215C29.622,15.377,30.188,13.495,29.942,11.62z"
+                              />
+                            </g>
+                          </g>
+                        </svg>
+                        Download
+                      </div>
                       <div className="flex flex-wrap items-center gap-12">
                         {packageData[key].accountFormat.map(
                           (
@@ -131,7 +202,7 @@ const OrdersTable = () => {
             ))}
           </tbody>
         </table>
-        {data?.data.length <= 0 && (
+        {order?.data.length <= 0 && (
           <div className="flex flex-col py-12 justify-center items-center">
             <div className="md:w-[350px] w-[150px]">
               <svg

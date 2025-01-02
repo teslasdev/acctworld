@@ -1,12 +1,12 @@
 import SelectGroupTwo from '../../Forms/SelectGroup/SelectGroupTwo';
-import { useProductsQuery } from '../../../api/fetch';
+import { useGetTypesByIdQuery, useProductsQuery } from '../../../api/fetch';
 import { useState } from 'react';
 import { baseUrl } from '../../../api';
 import DeleteModal from './DeleteModal';
 
 const ProductsTable = ({ typeId }: any) => {
   const [category, setFilter] = useState('');
-  const { data  , refetch} = useProductsQuery({ typeId, category });
+  const { data  , isLoading , refetch} = useProductsQuery({ typeId, category });
   const [isModalOpen, setModalOpen] = useState(false);
   const [details, setDetails] = useState({
     id: '',
@@ -23,10 +23,16 @@ const ProductsTable = ({ typeId }: any) => {
       name: '',
     },
   });
+
+  const {data : type}  = useGetTypesByIdQuery(typeId)
+
+  if(isLoading) {
+    return <p>Loading....</p>
+  }
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="flex md:w-[20%] flex-col gap-5.5 py-6.5">
-        <SelectGroupTwo setFilter={setFilter} />
+       <SelectGroupTwo type={type && type?.type?.categories} setFilter={setFilter} /> 
       </div>
       <div className="space-y-4 py-6">
         {data?.products.map((packageItem: any, key: number) => {
@@ -54,13 +60,13 @@ const ProductsTable = ({ typeId }: any) => {
 
                 {/* Quantity */}
                 <div className="flex md:w-[20%] justify-center items-center p-6">
-                  <span className="px-3 py-1 bg-blue-100 text-blue-700 text-sm rounded-full">
+                  <span className="px-3 py-1 bg-[#d50e3c1e] text-[#d50e3c] text-sm rounded-full">
                     {packageItem.itemCount} pcs
                   </span>
                 </div>
 
                 {/* Price */}
-                <div className="text-purple-700 md:w-[20%] border-r border-l  flex p-6 justify-center items-center font-bold">
+                <div className="text-[#d50e3c] md:w-[20%] border-r border-l  flex p-6 justify-center items-center font-bold">
                   ₦ {packageItem.price.toLocaleString()}
                 </div>
 

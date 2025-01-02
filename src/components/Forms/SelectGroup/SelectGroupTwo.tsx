@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
-import { useCategoryQuery } from '../../../api/fetch';
 
 type FilterContextType = {
   setFilter: (category: any) => void;
+  type : any
 };
 
-const SelectGroupTwo: React.FC<FilterContextType> = ({ setFilter }) => {
+const SelectGroupTwo: React.FC<FilterContextType> = ({ type , setFilter }) => {
   const [selectedOption, setSelectedOption] = useState<string>('');
   const [isOptionSelected, setIsOptionSelected] = useState<boolean>(false);
 
   const changeTextColor = () => {
     setIsOptionSelected(true);
   };
+const data = type || [];
 
-  const { data } = useCategoryQuery();
   return (
     <div>
       <div className="relative bg-white dark:bg-form-input">
@@ -55,14 +55,14 @@ const SelectGroupTwo: React.FC<FilterContextType> = ({ setFilter }) => {
             changeTextColor();
             setFilter(e.target.value);
           }}
-          className={`relative  w-full appearance-none rounded border border-stroke bg-transparent py-3 px-12 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input ${
+          className={`relative bg-red-500  w-full appearance-none rounded border border-stroke bg-transparent py-3 px-12 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input ${
             isOptionSelected ? 'text-black dark:text-white' : ''
           }`}
         >
           <option value="" disabled className="text-body dark:text-bodydark">
             Filter By
           </option>
-          {data?.categories.map((item: any, index: number) => {
+          {data?.map((item: any, index: number) => {
             return (
               <>
                 {item.visibility && (

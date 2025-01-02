@@ -193,7 +193,7 @@ const OverviewDashboard: React.FC = () => {
         <div className="flex items-center w-full justify-between">
           <h3>Transaction History</h3>
         </div>
-        <TransactionsTable refresh={refetch} />
+        <TransactionsTable  />
         <div className="w-[70vw]">
           {/* <Buttons /> */}
           <Modal

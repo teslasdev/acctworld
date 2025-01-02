@@ -13,6 +13,7 @@ import banner4 from '../../images/brand/Banners-05.jpg';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, A11y, Autoplay } from 'swiper/modules';
+import SelectGroupOne from '../../components/Forms/SelectGroup/SelectGroupOne';
 
 const Overview: React.FC = () => {
   const { data, refetch } = useAnalysticsQuery();
@@ -21,15 +22,25 @@ const Overview: React.FC = () => {
   const [payment, { isLoading }] = usePayementMutation();
   const [status, setStatus] = useState('');
   const [message, setMessage] = useState('');
+  const [method, setMethod] = useState('');
+  // Options
+
+  const options = [
+    { name: 'Korapay', id: 'korapay' },
+    {
+      name: 'Ercaspay',
+      id: 'ercspay',
+    },
+  ];
   const handleInitiate = async () => {
     const ref = generatePaymentReference();
-    await payment({ amount, ref })
+    await payment({ amount, ref, paymentMethods: method })
       .unwrap()
       .then((data: any) => {
         if (data.success) {
           setMessage('Processing your payment...Please wait');
           setStatus('warning');
-          const url = data.data.responseBody.checkoutUrl;
+          const url = data?.checkOutUrl;
           openSmallTab(url, refetch);
         }
       })
@@ -174,7 +185,7 @@ const Overview: React.FC = () => {
               alt="Slide 2"
               className="w-full h-full"
               onClick={() =>
-                (window.location.href = 'https://t.me/@acctworld_')
+                (window.location.href = 'https://t.me/@acctworld')
               }
             />
           </SwiperSlide>
@@ -213,6 +224,12 @@ const Overview: React.FC = () => {
             {!status && (
               <>
                 <div className="w-full">
+                  <SelectGroupOne
+                    handleInputChange={(e: any) => setMethod(e.target.value)}
+                    required={true}
+                    options={options}
+                    label="Payment Method"
+                  />
                   <label
                     className="mb-3 block text-sm font-medium text-black dark:text-white"
                     htmlFor="phoneNumber"

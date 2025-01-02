@@ -29,6 +29,9 @@ import About from './pages/About';
 import Service from './pages/Service';
 import EditProducts from './pages/Admin/EditProducts';
 import AddFunds from './pages/AddFunds';
+import Users from './pages/Admin/Users';
+import Forgot from './pages/Authentication/Forgot';
+import Reset from './pages/Authentication/Reset';
 
 interface ProtectedRouteProps {
   isAuthenticated: boolean;
@@ -138,6 +141,26 @@ function App() {
             </>
           }
         />
+
+        <Route
+          path="forgot-password"
+          element={
+            <>
+              <PageTitle title="Forget Password" />
+              <Forgot />
+            </>
+          }
+        />
+
+        <Route
+          path="reset-password"
+          element={
+            <>
+              <PageTitle title="Reset Password" />
+              <Reset />
+            </>
+          }
+        />
       </Route>
 
       <Route
@@ -232,6 +255,16 @@ function App() {
             <>
               <PageTitle title="Dashboard" />
               <OverviewDashboard />
+            </>
+          }
+        />
+
+        <Route
+          path="users"
+          element={
+            <>
+              <PageTitle title="Dashboard" />
+              <Users />
             </>
           }
         />

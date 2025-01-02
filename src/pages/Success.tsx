@@ -7,11 +7,12 @@ const Success: React.FC = () => {
     const [searchParams] = useSearchParams();
   // Extracting parameters
   const transRef = searchParams.get("transRef");
+  const ref = searchParams.get("reference");
   const [verification] = useVerificationMutation();
   useEffect(() => {
     const verifyPayment = async () => {
       try {
-        const data = await verification({ txnref : transRef }).unwrap();
+        const data = await verification({ txnref : transRef ?? ref }).unwrap();
         if (data.success) {
           window.close();
         } else {
@@ -22,10 +23,10 @@ const Success: React.FC = () => {
       }
     };
 
-    if (transRef) {
+    if (transRef ?? ref) {
       verifyPayment();
     }
-  }, [transRef, verification]);
+  }, [transRef, ref , verification]);
 
   return (
     <>

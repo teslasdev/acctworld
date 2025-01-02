@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { useTypeQuery } from '../../api/fetch';
+import { useCategoryQuery, useTypeQuery } from '../../api/fetch';
 import { Type } from '../../types/package';
 
 import { useEditTypeMutation, useTypesMutation } from '../../api/postToken';
 import { baseUrl } from '../../api';
+
+import MultiSelect from '../Forms/MultiSelect';
 
 const TypeTable = () => {
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string>('');
   const { data, refetch } = useTypeQuery();
   const [inputValue, setInputValue] = useState('');
+  const [selected, setSelected] = useState<number[]>([]);
   const [editingItem, setEditingItem] = useState<Type | null>(null);
   const [enabled, setEnabled] = useState<boolean>(true);
   const type = data?.data || [];
@@ -22,7 +25,9 @@ const TypeTable = () => {
     setInputValue(e.target.value);
   };
 
+  const { data: category } = useCategoryQuery();
 
+  const categories = category?.categories || [];
 
   const handleAddType = async () => {
     if (!file) return;
@@ -30,6 +35,7 @@ const TypeTable = () => {
     console.log(`New Type added: ${inputValue}`);
     const formData = new FormData();
     formData.append('name', inputValue);
+    formData.append('category', selected.toString());
     formData.append('visibility', enabled.toString());
     formData.append('file', file);
     await types(formData)
@@ -37,6 +43,8 @@ const TypeTable = () => {
       .then((data) => {
         refetch();
         console.log(data);
+        setSelected([])
+        setPreview('')
       })
       .catch((err) => {
         console.log(err);
@@ -50,6 +58,7 @@ const TypeTable = () => {
     if (!editingItem) return;
     const formData = new FormData();
     formData.append('name', inputValue);
+    formData.append('category', selected.toString());
     formData.append('visibility', enabled.toString());
     if (file) {
       formData.append('file', file);
@@ -58,14 +67,16 @@ const TypeTable = () => {
       .unwrap()
       .then((data) => {
         refetch();
-        console.log(data);
         setEditingItem(null);
+        setSelected([])
+        setPreview('')
       })
       .catch((err) => {
         console.log(err);
       });
 
     setInputValue('');
+    
   };
 
   const handleClear = () => {
@@ -76,7 +87,10 @@ const TypeTable = () => {
     const itemToEdit = type.find((item: any) => item.id === id);
     setEditingItem(itemToEdit);
     setInputValue(itemToEdit.name);
-    setPreview(`${baseUrl}` + itemToEdit.imageUrl)
+    setPreview(`${baseUrl}` + itemToEdit.imageUrl);
+    setEnabled(itemToEdit?.visibility);
+    setSelected(itemToEdit?.categories?.map((category: { id: { toString: () => any; }; }) => category.id) ?? []);
+
   };
 
   useEffect(() => {
@@ -134,7 +148,7 @@ const TypeTable = () => {
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                       <div className="flex items-center gap-4">
-                        <div className="w-[40px] h-[40px] bg-gray-400 rounded-[8px]">
+                        <div className="w-[40px] h-[40px] bg-white rounded-[8px]">
                           <img
                             src={`${baseUrl}` + packageItem?.imageUrl}
                             alt=""
@@ -237,6 +251,14 @@ const TypeTable = () => {
               />
             </div>
 
+            <MultiSelect
+              setSelected={setSelected}
+              selected={selected}
+              options={categories}
+              label={'Category'}
+              id="multiSelect"
+            />
+
             <div className="flex justify-between py-4">
               <p>Visibility :</p>
               <div>
@@ -274,7 +296,7 @@ const TypeTable = () => {
                 onChange={handleFileChange}
                 className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:py-3 file:px-5 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
               />
-              {preview  && (
+              {preview && (
                 <div className="mt-4">
                   <p className="text-sm mb-2 text-gray-500">Preview:</p>
                   <img

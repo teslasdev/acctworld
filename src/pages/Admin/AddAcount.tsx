@@ -51,7 +51,10 @@ const DynamicAccordionForm = ({ textInput, setFields }: any) => {
               </p>
               <p className="text-sm">2. Follow the instruction of the input</p>
               <p className="text-sm">
-                3. The input must be the same on each accounts.
+                3. Avoid using (:) in the value.
+              </p>
+              <p className="text-sm">
+                4. For each account , Use double linr.
               </p>
               <p className="text-sm mt-2">
                 Please note!! As many accounts you added as number of piece of

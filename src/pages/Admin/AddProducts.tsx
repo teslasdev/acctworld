@@ -1,19 +1,18 @@
 import { useEffect, useState } from 'react';
-import { useCategoryQuery, useTypeQuery } from '../../api/fetch';
+import { useGetTypesByIdQuery, useTypeQuery } from '../../api/fetch';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 
 import SelectGroupOne from '../../components/Forms/SelectGroup/SelectGroupOne';
-import Accordion from '../UiElements/Accordion';
+
 import DynamicAccordionForm from './AddAcount';
 import { useProductsMutation } from '../../api/postToken';
 import Alerts from '../UiElements/Alerts';
 
 const AddProducts = () => {
   const [file, setFile] = useState<File | null>(null);
-  const [preview, setPreview] = useState<string>('');
-  const { data: category } = useCategoryQuery();
+  // const [preview, setPreview] = useState<string>('');
+  // const { data: category } = useCategoryQuery();
   const { data: type } = useTypeQuery();
-  const categories = category?.categories || [];
   const types = type?.data || [];
 
   const [status, setStatus] = useState('');
@@ -22,7 +21,6 @@ const AddProducts = () => {
 
   const [formData, setFormData] = useState({
     name: '',
-    category: '',
     type: '',
     price: '',
     description: '',
@@ -37,6 +35,7 @@ const AddProducts = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [message]);
+
   // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   //   const selectedFile = event.target.files?.[0];
   //   if (selectedFile) {
@@ -59,15 +58,17 @@ const AddProducts = () => {
 
   const [products, { isLoading }] = useProductsMutation();
 
+  const { data: typeData, isLoading: isLoadingType } = useGetTypesByIdQuery(
+    formData?.type as any,
+  );
+  const categories = typeData?.type?.categories || [];
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    console.log(formData);
-
     const data = new FormData();
     data.append('name', formData.name);
-    data.append('category', formData.category);
-    data.append('type', formData.type);
+    data.append('type', formData?.type);
     data.append('price', formData.price);
     data.append('description', formData.description);
     data.append('previewLink', formData.previewLink);
@@ -97,7 +98,6 @@ const AddProducts = () => {
     }
   }, 5000);
 
-  console.log(fields)
   return (
     <>
       <Breadcrumb pageName="Products" />
@@ -112,7 +112,6 @@ const AddProducts = () => {
             </div>
 
             <div className="p-6.5">
-              
               <div className="mb-4.5 mt-4">
                 <label className="mb-2.5 block text-black dark:text-white">
                   Name <span className="text-meta-1">*</span>
@@ -129,17 +128,19 @@ const AddProducts = () => {
               </div>
 
               <SelectGroupOne
-                name="category"
-                handleInputChange={handleInputChange}
-                options={categories}
-                label={'Catogory'}
-              />
-
-              <SelectGroupOne
                 name="type"
                 handleInputChange={handleInputChange}
                 options={types}
                 label={'Type'}
+                required={true}
+              />
+
+              <SelectGroupOne
+                name="category"
+                handleInputChange={handleInputChange}
+                options={categories}
+                label={'Catogory'}
+                required={false}
               />
 
               {/* <div className="pb-6">
@@ -211,10 +212,10 @@ const AddProducts = () => {
             </div>
           </div>
 
-          <div className='md:w-[40%] w-full'>
+          <div className="md:w-[40%] w-full">
             <DynamicAccordionForm textInput={[]} setFields={setFields} />
-            <div className='py-4'>
-            <Alerts status={status} message={message} />
+            <div className="py-4">
+              <Alerts status={status} message={message} />
             </div>
             <button
               type="submit"

@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
+import  { useEffect, useState } from 'react';
 
-const SelectGroupOne = ({ options , label , name , handleInputChange , value }: any) => {
+const SelectGroupOne = ({ options , label , name , handleInputChange , value , required }: any) => {
   const [selectedOption, setSelectedOption] = useState<string>('');
   const [isOptionSelected, setIsOptionSelected] = useState<boolean>(false);
 
   const changeTextColor = () => {
     setIsOptionSelected(true);
   };
+
+  useEffect(() => {
+    setSelectedOption(value)
+  } , [value])
 
   return (
     <div className="mb-4.5">
@@ -19,7 +23,7 @@ const SelectGroupOne = ({ options , label , name , handleInputChange , value }: 
         <select
           name={name}
           value={value ?? selectedOption}
-          required
+          required={required}
           onChange={(e) => {
             setSelectedOption(e.target.value);
             changeTextColor();

@@ -89,6 +89,13 @@ const ApiPostToken = createApi({
         method: 'DELETE',
       }),
     }),
+    changePassword: builder.mutation({
+      query: (data) => ({
+        url: '/auth/change-password',
+        method: 'POST',
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -103,5 +110,6 @@ export const {
   useProductsMutation,
   useUpdateProductsMutation,
   useDeleteProductMutation,
+  useChangePasswordMutation
 } = ApiPostToken;
 export default ApiPostToken;

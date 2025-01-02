@@ -13,10 +13,10 @@ const Accordion: React.FC<AccordionProps> = ({ fields, setFields }) => {
   // const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [message, setMsg] = useState('Save');
-  const [isLoading, setLoading] = useState(false);
+  const [account, setCount] = useState(0);
 
   const handleConvert = () => {
-    setLoading(true);
+   
     const blocks = input.split(/\n\s*\n/);
     // Convert each block into an object
     const converted: KeyValueObject[] = blocks.map((block) => {
@@ -35,7 +35,7 @@ const Accordion: React.FC<AccordionProps> = ({ fields, setFields }) => {
 
     setFields(converted);
     setMsg('Saved');
-    setLoading(false);
+    setCount(converted.length)
   };
 
   setTimeout(() => {
@@ -89,9 +89,9 @@ const Accordion: React.FC<AccordionProps> = ({ fields, setFields }) => {
           >
             {message}
           </button>
-          {isLoading && (
-            <span className="h-5 w-5 animate-spin rounded-full border-2 border-solid border-[#d50e3c] border-t-transparent"></span>
-          )}
+
+          <span>{account} account(s)</span>
+         
         </div>
       </div>
     </div>

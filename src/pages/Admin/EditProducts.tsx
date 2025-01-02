@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import {
   useCategoryQuery,
   useGetProductByIdQuery,
+  useGetTypesByIdQuery,
   useTypeQuery,
 } from '../../api/fetch';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
@@ -13,18 +14,18 @@ import { useUpdateProductsMutation } from '../../api/postToken';
 
 const EditProducts = () => {
   const { id } = useParams<{ id: string }>(); // Explicitly typing the id
-  const { data: productData, isLoading: isFetching } = useGetProductByIdQuery(id as any)
+  const { data: productData, isLoading: isFetching } = useGetProductByIdQuery(
+    id as any,
+  );
 
-  const { data: category } = useCategoryQuery();
   const { data: type } = useTypeQuery();
 
-  const categories = category?.categories || [];
   const types = type?.data || [];
 
   const [status, setStatus] = useState('');
   const [message, setMessage] = useState('');
   const [fields, setFields] = useState([]);
-  const [file, setFile] = useState<File | null>(null);
+  // const [file, setFile] = useState<File | null>(null);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -37,6 +38,8 @@ const EditProducts = () => {
   });
 
   const [updateProduct, { isLoading }] = useUpdateProductsMutation();
+
+ 
 
   useEffect(() => {
     if (productData) {
@@ -54,10 +57,12 @@ const EditProducts = () => {
     }
   }, [productData]);
 
-
   useEffect(() => {
     setFormData({ ...formData, accountFormat: fields });
   }, [fields]);
+
+  const { data: typeData } = useGetTypesByIdQuery(formData?.type as any);
+  const categories = typeData?.type?.categories || [];
 
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
@@ -77,9 +82,9 @@ const EditProducts = () => {
     data.append('description', formData.description);
     data.append('previewLink', formData.previewLink);
     data.append('accountFormat', fields.toString());
-    if (file) {
-      data.append('file', file);
-    }
+    // if (file) {
+    //   data.append('file', file);
+    // }
 
     await updateProduct({ id, ...formData })
       .unwrap()
@@ -100,6 +105,7 @@ const EditProducts = () => {
       setStatus('');
     }
   }, 5000);
+
   return (
     <>
       <Breadcrumb pageName="Edit Product" />
@@ -132,19 +138,21 @@ const EditProducts = () => {
                 </div>
 
                 <SelectGroupOne
-                  name="category"
-                  handleInputChange={handleInputChange}
-                  options={categories}
-                  label={'Category'}
-                  value={formData.category}
-                />
-
-                <SelectGroupOne
                   name="type"
                   handleInputChange={handleInputChange}
                   options={types}
                   label={'Type'}
-                  value={formData.type}
+                  required={true}
+                  value={formData?.type}
+                />
+
+                <SelectGroupOne
+                  name="category"
+                  handleInputChange={handleInputChange}
+                  options={categories}
+                  label={'Category'}
+                  required={false}
+                  value={formData?.category}
                 />
 
                 <div className="mb-4.5">
@@ -196,7 +204,10 @@ const EditProducts = () => {
             </div>
 
             <div className="md:w-[40%] w-full">
-              <DynamicAccordionForm textInput={productData?.product.accountFormats ?? []} setFields={setFields} />
+              <DynamicAccordionForm
+                textInput={productData?.product.accountFormats ?? []}
+                setFields={setFields}
+              />
               <div className="py-4">
                 <Alerts status={status} message={message} />
               </div>

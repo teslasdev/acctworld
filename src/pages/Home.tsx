@@ -255,7 +255,7 @@ const Home = () => {
               src={banner3}
               alt="Slide 2"
               className="w-full h-[150px] md:h-[500px]"
-              onClick={() => window.location.href="https://t.me/@acctworld_"}
+              onClick={() => window.location.href="https://t.me/@acctworld"}
             />
           </SwiperSlide>
           <SwiperSlide>
@@ -271,7 +271,7 @@ const Home = () => {
 
       <div className="mx-auto lg:px-0 px-4 max-w-[1440px] flex md:flex-row-reverse flex-col-reverse justify-between items-center py-24 w-full">
         <div className="md:w-[50%] w-full">
-          <div className="lg:w-[600px] w-full md:h-[500px] bg-gray-400">
+          <div className="lg:w-[600px] w-full md:h-[500px] bg-white">
             <img src={feature} className='w-full h-full' />
           </div>
         </div>
