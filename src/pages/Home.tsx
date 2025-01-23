@@ -75,7 +75,7 @@ const Home = () => {
                 onClick={() => (window.location.href = '/auth/signup')}
                 className="text-white px-4 py-2 mt-6 font-[500] rounded-[16px] bg-gradient-to-r from-gradient-start to-gradient-end"
               >
-                Get Started Now
+                Sign Up
               </button>
             </div>
           </div>

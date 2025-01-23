@@ -96,6 +96,14 @@ const ApiPostToken = createApi({
         body: data,
       }),
     }),
+    
+    UpdateBalance: builder.mutation({
+      query: (data) => ({
+        url: '/api/admin/balance/update',
+        method: 'POST',
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -110,6 +118,7 @@ export const {
   useProductsMutation,
   useUpdateProductsMutation,
   useDeleteProductMutation,
-  useChangePasswordMutation
+  useChangePasswordMutation,
+  useUpdateBalanceMutation
 } = ApiPostToken;
 export default ApiPostToken;

@@ -8,6 +8,31 @@ const OrdersTable = () => {
   const packageData = data?.data || [];
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
 
+  const [filters, setFilters] = useState({
+    id: '',
+    ordered_by: '',
+    amount: '',
+  });
+
+  const filteredData = packageData.filter((item: any) => {
+    const matchesId =
+      filters.id === '' || item.id.toString().includes(filters.id);
+    const matchesAmount =
+      filters.amount === '' || item.price.toString().includes(filters.amount);
+    const matchesBy =
+      filters.ordered_by === '' ||
+      item.user.full_name.toString().includes(filters.ordered_by);
+
+    return matchesId && matchesAmount && matchesBy;
+  });
+
+  const handleFilterChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    const { name, value } = e.target;
+    setFilters((prev) => ({ ...prev, [name]: value }));
+  };
+
   const toggleRow = (key: number) => {
     setExpandedRows((prev) =>
       prev.includes(key) ? prev.filter((row) => row !== key) : [...prev, key],
@@ -17,36 +42,28 @@ const OrdersTable = () => {
   const generatePdf = async (data: any) => {
     const doc = new jsPDF();
 
-    // Add Title
     doc.setFontSize(16);
     doc.text('Product Details', 10, 10);
 
-    // Add Basic Details
     doc.setFontSize(12);
     doc.text(`ID: ${data.id}`, 10, 20);
     doc.text(`Name: ${data.name}`, 10, 30);
     doc.text(`Quantity: ${data.qty}`, 10, 40);
     doc.text(`Price: ${data.price}`, 10, 50);
 
-    // Add Account Format Details
     doc.text('Account Details:', 10, 80);
-    let yPosition = 90; // Start position for account details
+    let yPosition = 90;
 
-    data.accountFormat.forEach(
-      (
-        account: { Email: any; Password: any; Username: any },
-        index: number,
-      ) => {
-        doc.text(`Account ${index + 1}:`, 10, yPosition);
-        yPosition += 10; // Move to the next line
-        doc.text(`   Email: ${account.Email}`, 10, yPosition);
+    data.accountFormat.forEach((account: any, index: number) => {
+      doc.text(`Account ${index + 1}:`, 10, yPosition);
+      yPosition += 10;
+
+      Object.entries(account).forEach(([key, value]) => {
+        doc.text(`   ${key}: ${value}`, 10, yPosition);
         yPosition += 10;
-        doc.text(`   Password: ${account.Password}`, 10, yPosition);
-        yPosition += 10;
-        doc.text(`   Username: ${account.Username}`, 10, yPosition);
-        yPosition += 15; // Add spacing between accounts
-      },
-    );
+      });
+      yPosition += 5;
+    });
 
     // Add Image
     const img = new Image();
@@ -59,10 +76,41 @@ const OrdersTable = () => {
 
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+      {/* Filter Section */}
+      <div className="mb-4 flex flex-wrap gap-4">
+        <input
+          type="text"
+          name="amount"
+          value={filters.amount}
+          onChange={handleFilterChange}
+          placeholder="Filter by Amount"
+          className="p-2 border rounded outline-none"
+        />
+        <input
+          type="text"
+          name="id"
+          value={filters.id}
+          onChange={handleFilterChange}
+          placeholder="Filter by User Id"
+          className="p-2 border rounded outline-none"
+        />
+
+        <input
+          type="text"
+          name="ordered_by"
+          value={filters.ordered_by}
+          onChange={handleFilterChange}
+          placeholder="Filter by User Name"
+          className="p-2 border rounded outline-none"
+        />
+      </div>
       <div className="max-w-full overflow-x-auto">
         <table className="w-full table-auto">
           <thead>
             <tr className="bg-gray-2 text-left dark:bg-meta-4">
+              <th className="min-w-[20px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
+                #
+              </th>
               <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
                 Package
               </th>
@@ -84,12 +132,19 @@ const OrdersTable = () => {
             </tr>
           </thead>
           <tbody>
-            {packageData.map((packageItem: any, key: number) => (
+            {filteredData.map((packageItem: any, key: number) => (
               <React.Fragment key={key}>
                 <tr
                   onClick={() => toggleRow(key)}
                   className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800"
                 >
+                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                    <p
+                      className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium`}
+                    >
+                      #{packageItem.id}
+                    </p>
+                  </td>
                   <td className="border-b border-[#eee] py-5 px-4 md:pl-9 dark:border-strokedark xl:pl-11">
                     <div className="flex items-center gap-2">
                       <div className="w-[40px] hidden md:flex h-[40px] bg-white rounded-[8px]">

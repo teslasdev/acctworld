@@ -3,7 +3,7 @@ import { useOrdersQuery } from '../../api/fetch';
 import { jsPDF } from 'jspdf';
 
 const OrdersTable = () => {
-  const { data : order } = useOrdersQuery();
+  const { data: order } = useOrdersQuery();
 
   const packageData = order?.data || [];
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
@@ -14,40 +14,31 @@ const OrdersTable = () => {
     );
   };
 
-  
   const generatePdf = async (data: any) => {
     const doc = new jsPDF();
 
-    // Add Title
     doc.setFontSize(16);
     doc.text('Product Details', 10, 10);
 
-    // Add Basic Details
     doc.setFontSize(12);
     doc.text(`ID: ${data.id}`, 10, 20);
     doc.text(`Name: ${data.name}`, 10, 30);
     doc.text(`Quantity: ${data.qty}`, 10, 40);
     doc.text(`Price: ${data.price}`, 10, 50);
-   
-    // Add Account Format Details
-    doc.text('Account Details:', 10, 80);
-    let yPosition = 90; // Start position for account details
 
-    data.accountFormat.forEach(
-      (
-        account: { Email: any; Password: any; Username: any },
-        index: number,
-      ) => {
-        doc.text(`Account ${index + 1}:`, 10, yPosition);
-        yPosition += 10; // Move to the next line
-        doc.text(`   Email: ${account.Email}`, 10, yPosition);
+    doc.text('Account Details:', 10, 80);
+    let yPosition = 90;
+
+    data.accountFormat.forEach((account: any, index: number) => {
+      doc.text(`Account ${index + 1}:`, 10, yPosition);
+      yPosition += 10;
+
+      Object.entries(account).forEach(([key, value]) => {
+        doc.text(`   ${key}: ${value}`, 10, yPosition);
         yPosition += 10;
-        doc.text(`   Password: ${account.Password}`, 10, yPosition);
-        yPosition += 10;
-        doc.text(`   Username: ${account.Username}`, 10, yPosition);
-        yPosition += 15; // Add spacing between accounts
-      },
-    );
+      });
+      yPosition += 5;
+    });
 
     // Add Image
     const img = new Image();
@@ -64,6 +55,9 @@ const OrdersTable = () => {
         <table className="w-full table-auto">
           <thead>
             <tr className="bg-gray-2 text-left dark:bg-meta-4">
+            <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
+                #
+              </th>
               <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
                 Package
               </th>
@@ -87,6 +81,13 @@ const OrdersTable = () => {
                   onClick={() => toggleRow(key)}
                   className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800"
                 >
+                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                    <p
+                      className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium`}
+                    >
+                      #{packageItem.id}
+                    </p>
+                  </td>
                   <td className="border-b border-[#eee] py-5 px-4 md:pl-9 dark:border-strokedark xl:pl-11">
                     <div className="flex items-center gap-2">
                       <div className="w-[40px] hidden md:flex h-[40px] bg-white rounded-[8px]">
@@ -139,7 +140,10 @@ const OrdersTable = () => {
                       colSpan={4}
                       className="border-b relative bg-gray-50 dark:bg-gray-900 border-[#eee] py-5 px-4 md:px-12 dark:border-strokedark"
                     >
-                      <div onClick={() => generatePdf(packageData[key])} className="bg-black cursor-pointer text-[12px] text-white rounded-full px-6 py-2 flex items-center gap-2 w-fit font-semibold absolute top-4 right-5">
+                      <div
+                        onClick={() => generatePdf(packageData[key])}
+                        className="bg-black cursor-pointer text-[12px] text-white rounded-full px-6 py-2 flex items-center gap-2 w-fit font-semibold absolute top-4 right-5"
+                      >
                         <svg
                           id="Uploaded to svgrepo.com"
                           xmlns="http://www.w3.org/2000/svg"

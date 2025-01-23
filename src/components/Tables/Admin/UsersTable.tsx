@@ -1,10 +1,16 @@
 import { useState } from 'react';
 import { useGetUsersQuery } from '../../../api/fetch';
-import { LuFileSearch2 } from 'react-icons/lu';
+import Modal from '../../Modals/AddFunds';
+import Alerts from '../../../pages/UiElements/Alerts';
+import { useUpdateBalanceMutation } from '../../../api/postToken';
+import SelectGroupOne from '../../Forms/SelectGroup/SelectGroupOne';
 
 const UsersTable = () => {
-  const { data } = useGetUsersQuery();
+  const { data, refetch } = useGetUsersQuery();
   const packageData = data?.data || [];
+  const [isOpen, setOpen] = useState(false);
+  const [status, setStatus] = useState('');
+  const [message, setMessage] = useState('');
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -46,6 +52,44 @@ const UsersTable = () => {
 
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
+  };
+
+  // OPtions
+  const options = [
+    { name: 'Credit', id: 'credit' },
+    {
+      name: 'Debit',
+      id: 'debit',
+    },
+  ];
+
+  const [funding, setFunding] = useState({
+    amount: '',
+    type: '',
+    userId: '',
+  });
+
+  const [updateBal, { isLoading }] = useUpdateBalanceMutation();
+  // Add Funds Submit
+  const handleFunds = async () => {
+    setMessage('');
+    setStatus('');
+    await updateBal(funding)
+      .unwrap()
+      .then((data: any) => {
+        // console.log(data);
+        if (data.success) {
+          setMessage(data?.message);
+          setStatus('success');
+          refetch();
+          setOpen(false);
+        }
+      })
+      .catch((err: any) => {
+        console.log('err', err);
+        setMessage(err?.data.message ?? 'Error,Try Again');
+        setStatus('error');
+      });
   };
 
   return (
@@ -101,6 +145,9 @@ const UsersTable = () => {
                 </th>
                 <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
                   Role
+                </th>
+                <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
+                  Action
                 </th>
               </tr>
             </thead>
@@ -165,6 +212,25 @@ const UsersTable = () => {
                     >
                       {packageItem.role}
                     </p>
+                  </td>
+
+                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                    {packageItem.role == 'Super Admin' ||
+                    packageItem.role == 'Admin' ? (
+                      <button className="px-2 py-3 bg-[#666565] text-white text-sm rounded-lg hover:bg-[#d50e3c] focus:outline-none">
+                        No Fund
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          setOpen(true);
+                          setFunding({ ...funding, userId: packageItem.id });
+                        }}
+                        className="px-2 py-3 bg-[#d50e3c] text-white text-sm rounded-lg hover:bg-[#d50e3c] focus:outline-none"
+                      >
+                        Add / Remove Fund
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}
@@ -729,6 +795,50 @@ const UsersTable = () => {
           </button>
         </div>
       )}
+
+      <div className="w-[70vw]">
+        {/* <Buttons /> */}
+        <Modal title="Add Funds" isOpen={isOpen} onClose={() => setOpen(false)}>
+          <Alerts status={status} message={message} />
+
+          <div className="w-full mt-4">
+            <SelectGroupOne
+              handleInputChange={(e: any) =>
+                setFunding({ ...funding, type: e.target.value })
+              }
+              required={true}
+              options={options}
+              label="Type e.g Debit Or Credit"
+            />
+            <label
+              className="mb-3 block text-sm font-medium text-black dark:text-white"
+              htmlFor="phoneNumber"
+            >
+              Enter Amount
+            </label>
+            <input
+              className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+              type="number"
+              name="amount"
+              id="amount"
+              value={funding.amount}
+              placeholder="Amount"
+              defaultValue="Amount"
+              onChange={(e: any) =>
+                setFunding({ ...funding, amount: e.target.value })
+              }
+            />
+          </div>
+
+          <button
+            disabled={funding.amount == '' ? true : false}
+            onClick={handleFunds}
+            className="px-4 py-2 my-6 bg-[#d50e3c] text-white rounded hover:bg-[#d50e3c] focus:outline-none"
+          >
+            {isLoading ? 'Processing....' : 'Save'}
+          </button>
+        </Modal>
+      </div>
     </>
   );
 };

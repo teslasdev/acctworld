@@ -474,7 +474,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               {/* <!-- Menu Item Settings --> */}
               <li>
                 <NavLink
-                  to="/dashboard/settings"
+                  to={`${
+                    data.user.is_admin
+                      ? '/admin/settings'
+                      : '/dashboard/settings'
+                  }`}
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 hover:text-graydark duration-300 ease-in-out hover:bg-white dark:bg-meta-4 ${
                     pathname.includes('/dashboard/settings') &&
                     'bg-white text-graydark dark:text-white dark:bg-meta-4'

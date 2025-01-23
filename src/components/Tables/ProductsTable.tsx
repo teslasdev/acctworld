@@ -248,7 +248,9 @@ const ProductsTable = ({ typeId }: any) => {
                 </div>
                 <div>
                   <b>Description</b>
-                  <p className="text-gray-700">{details.description}</p>
+                  <div className='h-fit max-h-[350px] overflow-y-auto'>
+                    <p className="text-gray-700 dark:text-white">{details.description}</p>
+                  </div>
                 </div>
 
                 <div>

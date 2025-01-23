@@ -41,7 +41,7 @@ const TransactionsTable = () => {
     setCurrentPage(pageNumber);
   };
 
-  const [txn, setTxn] = useState('');
+  
 
 
   return (
