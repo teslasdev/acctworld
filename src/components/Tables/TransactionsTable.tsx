@@ -74,7 +74,7 @@ const TransactionsTable = ({ refresh }: any) => {
             </svg>
           </div>
           <div>
-            <p className="font-bold">Swipe to Verify your transactions</p>
+            <p className="font-bold">Slide to the left to verify transactions</p>
             <p className="text-sm">
               Make sure you verify your transaction to know the status
             </p>
